@@ -4,10 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inventário de Software - IFRS Canoas</title>
+    
+    <link rel="icon" type="image/png" href="ifrs.png">
+    <link rel="apple-touch-icon" href="ifrs.png">
+
     <style>
         :root { --ifrs-verde: #32a041; --ifrs-verde-escuro: #257a31; --ifrs-cinza: #f4f4f4; --ifrs-texto: #333333; }
         
-        /* Reset e Base */
         * { box-sizing: border-box; }
         body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #e9ecef; margin: 0; padding: 20px; color: var(--ifrs-texto); user-select: none; }
         
@@ -55,7 +58,7 @@
         /* Tabela Responsiva */
         .table-container { width: 100%; overflow-x: auto; margin-top: 10px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.05); }
         table { width: 100%; border-collapse: collapse; min-width: 700px; }
-        th { background-color: var(--ifrs-verde); color: white; padding: 15px; text-align: left; text-transform: uppercase; font-size: 0.85em; position: sticky; top: 0; }
+        th { background-color: var(--ifrs-verde); color: white; padding: 15px; text-align: left; text-transform: uppercase; font-size: 0.85em; position: sticky; top: 0; z-index: 5; }
         td { padding: 12px 15px; border-bottom: 1px solid #eee; background: white; }
         tr:nth-child(even) td { background-color: #f9f9f9; }
         
@@ -63,7 +66,7 @@
         .lab-badge.pendente { background: #e2e3e5; color: #383d41; border-color: #d6d8db; }
         
         /* Admin Actions */
-        .admin-col { display: none; width: 180px; }
+        .admin-col { display: none; width: 120px; }
         .btn-edit { background: #ffc107; color: #212529; border: none; padding: 7px 12px; border-radius: 4px; font-weight: bold; cursor: pointer; margin-right: 5px; }
         .btn-delete { background: #dc3545; color: white; border: none; padding: 7px 12px; border-radius: 4px; font-weight: bold; cursor: pointer; }
         
@@ -154,7 +157,7 @@
         <table id="softwareTable" style="display:none;">
             <thead>
                 <tr>
-                    <th class="admin-col">Gerenciar</th>
+                    <th class="admin-col">Ações</th>
                     <th style="width: 70px;">ID</th>
                     <th>Software</th>
                     <th>Laboratórios</th>
@@ -167,7 +170,9 @@
 </div>
 
 <script>
+    // URL do seu Google Apps Script (Mantenha esta URL)
     const GOOGLE_APP_URL = "https://script.google.com/macros/s/AKfycbyQKP6NEhGgiOeaQjPi09iZrWl0i_FWIIsy7HnxLiCk2MYVADM-3MrRMWYUYVPPcqZLFw/exec"; 
+    
     const LABS_PERMITIDOS = ["E10", "E09", "E08", "E07", "E06", "E05", "E04", "D04", "D05", "D06", "D10", "B2", "B2A"];
     
     let softwareData = [];
@@ -175,7 +180,6 @@
     let senhaConfirmada = ""; 
     let labsSelecionados = [];
 
-    // Funções de Interface
     function togglePasswordVisibility() {
         const input = document.getElementById('adminPasswordInput');
         input.type = input.type === "password" ? "text" : "password";
@@ -237,7 +241,6 @@
         });
     }
 
-    // Dados e Tabela
     async function loadData() {
         try {
             const res = await fetch(GOOGLE_APP_URL);
@@ -284,7 +287,6 @@
         document.getElementById('noResult').style.display = cont === 0 ? 'block' : 'none';
     }
 
-    // Ações CRUD
     async function saveSoftware(action) {
         const id = document.getElementById('newId').value;
         const name = document.getElementById('newName').value;

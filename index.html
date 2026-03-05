@@ -46,7 +46,7 @@
         /* MODAL DE SOLICITAÇÃO */
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); justify-content: center; align-items: center; z-index: 2000; padding: 15px; }
         .modal-content { background: white; padding: 25px; border-radius: 12px; width: 100%; max-width: 500px; position: relative; max-height: 90vh; overflow-y: auto; }
-        .modal-content h2 { color: var(--ifrs-verde-escuro); margin-top: 0; font-size: 1.5em; border-bottom: 2px solid var(--ifrs-cinza); padding-bottom: 10px; }
+        .modal-content h2 { color: var(--ifrs-verde-escuro); margin: 0 0 15px 0; font-size: 1.5em; border-bottom: 2px solid var(--ifrs-cinza); padding-bottom: 10px; }
         
         .form-group { margin-bottom: 15px; text-align: left; }
         .form-group label { display: block; font-weight: bold; margin-bottom: 5px; font-size: 0.9em; }
@@ -62,6 +62,7 @@
 
         .btn-close-modal { position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 24px; cursor: pointer; color: #999; }
         .btn-salvar { background-color: var(--ifrs-verde); color: white; border: none; padding: 12px; border-radius: 6px; cursor: pointer; font-weight: bold; transition: 0.2s; }
+        .btn-salvar:hover { background-color: var(--ifrs-verde-escuro); }
         
         @media (max-width: 768px) {
             .top-buttons { position: static; flex-direction: column; width: 100%; margin-bottom: 20px; }
@@ -92,17 +93,17 @@
                     <label class="license-item">
                         <input type="radio" name="license" value="Freeware" required> Freeware
                         <span class="info-icon">?</span>
-                        <span class="tooltip-text"><b>Freeware:</b> Gratuito para uso final, mas com código fechado. Ex: Adobe Reader, Skype.</span>
+                        <span class="tooltip-text"><b>Freeware:</b> Software gratuito, protegido por direitos autorais, mas distribuído sem custo monetário para o uso final. Geralmente, o código-fonte não é disponibilizado.</span>
                     </label>
                     <label class="license-item">
                         <input type="radio" name="license" value="Open Source"> Open Source
                         <span class="info-icon">?</span>
-                        <span class="tooltip-text"><b>Open Source:</b> Código aberto. Permite estudar, modificar e redistribuir. Ex: VLC, LibreOffice.</span>
+                        <span class="tooltip-text"><b>Open Source (Código Aberto):</b> Software cujo código-fonte é disponibilizado publicamente, permitindo que qualquer pessoa estude, modifique e redistribua o programa.</span>
                     </label>
                     <label class="license-item">
                         <input type="radio" name="license" value="Shareware"> Shareware
                         <span class="info-icon">?</span>
-                        <span class="tooltip-text"><b>Shareware:</b> Período de testes gratuito. Exige pagamento para uso contínuo.</span>
+                        <span class="tooltip-text"><b>Shareware:</b> Software comercial distribuído gratuitamente, mas com limitações de tempo ou funcionalidade. Exige pagamento após período de teste.</span>
                     </label>
                 </div>
             </div>
@@ -189,7 +190,7 @@
 
 <script>
     // URL ATUALIZADA DO SEU SCRIPT
-    const GOOGLE_APP_URL = "https://script.google.com/macros/s/AKfycbz3evZwQI1LtuV_5PfMaJusg2HN7pPRw6yv_7k8dpAdJ2u2ok3v3hDBiFgha_5U9sEVTQ/exec"; 
+    const GOOGLE_APP_URL = "https://script.google.com/macros/s/AKfycbwVCkmrdj9eBnlS87OJW5g3tOleKLfcilD76Lw4rKioHzhpOL9Gr8gGMWfjhwbCXVs5XA/exec"; 
     
     const LABS_PERMITIDOS = ["E10", "E09", "E08", "E07", "E06", "E05", "E04", "D04", "D05", "D06", "D10", "B2", "B2A"];
     

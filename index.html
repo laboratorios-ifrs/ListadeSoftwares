@@ -1,7 +1,3 @@
-
-
-
-
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -13,7 +9,7 @@
     <link rel="apple-touch-icon" href="ifrs.png">
 
     <style>
-        :root { --ifrs-verde: #32a041; --ifrs-verde-escuro: #257a31; --ifrs-cinza: #f4f4f4; --ifrs-texto: #333333; --ifrs-amarelo: #ffc107; --cor-borda: #ccc; }
+        :root { --ifrs-verde: #32a041; --ifrs-verde-escuro: #257a31; --ifrs-cinza: #f4f4f4; --ifrs-texto: #333333; --cor-borda: #ccc; }
         
         * { box-sizing: border-box; }
         body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #e9ecef; margin: 0; padding: 20px; color: var(--ifrs-texto); user-select: none; }
@@ -21,9 +17,8 @@
         .container { max-width: 1200px; margin: auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); border-top: 8px solid var(--ifrs-verde); position: relative; }
         
         .top-buttons { position: absolute; top: 30px; right: 30px; display: flex; gap: 10px; z-index: 100; }
-        .btn-request { background-color: var(--ifrs-amarelo); color: #212529; border: none; padding: 8px 15px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 0.9em; transition: 0.2s; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .btn-request:hover { background-color: #e0a800; transform: translateY(-2px); }
         .btn-admin-toggle { background: #fff; border: 1px solid #ccc; color: #666; padding: 8px 15px; border-radius: 6px; cursor: pointer; font-size: 0.85em; transition: 0.2s; font-weight: bold; }
+        .btn-admin-toggle:hover { background: #f0f0f0; }
         
         .header-main { display: flex; align-items: center; gap: 15px; margin-bottom: 30px; border-bottom: 2px solid var(--ifrs-cinza); padding-bottom: 20px; }
         .logo-ifrs { width: 125px; height: auto; } 
@@ -43,40 +38,20 @@
         .lab-badge { background: #d4edda; color: #155724; padding: 4px 10px; border-radius: 4px; font-size: 0.8em; font-weight: bold; margin-right: 5px; border: 1px solid #c3e6cb; display: inline-block; margin-bottom: 4px; }
         
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); justify-content: center; align-items: center; z-index: 2000; padding: 15px; }
-        .modal-content { background: white; padding: 25px; border-radius: 12px; width: 100%; max-width: 550px; position: relative; max-height: 90vh; overflow-y: auto; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
-        .modal-content h2 { color: var(--ifrs-verde-escuro); margin: 0 0 15px 0; font-size: 1.5em; border-bottom: 2px solid var(--ifrs-cinza); padding-bottom: 10px; }
+        .modal-content { background: white; padding: 25px; border-radius: 12px; width: 100%; max-width: 400px; position: relative; }
+        .modal-content h3 { margin-top: 0; color: var(--ifrs-verde-escuro); }
         
         .form-group { margin-bottom: 15px; text-align: left; }
-        .form-group label.main-label { display: block; font-weight: bold; margin-bottom: 8px; font-size: 0.95em; color: #444; }
-        .form-group input[type="text"], .form-group input[type="email"], .form-group input[type="url"], .form-group input[type="password"], .form-group input[type="number"] { width: 100%; padding: 12px; border: 1px solid var(--cor-borda); border-radius: 8px; font-size: 14px; transition: 0.2s; }
-        .form-group input:focus { border-color: var(--ifrs-verde); outline: none; box-shadow: 0 0 0 3px rgba(50,160,65,0.15); }
+        .form-group input { width: 100%; padding: 12px; border: 1px solid var(--cor-borda); border-radius: 8px; font-size: 14px; transition: 0.2s; }
+        .form-group input:focus { border-color: var(--ifrs-verde); outline: none; }
         
-        .license-options-container { background: #f9f9f9; padding: 15px; border-radius: 8px; border: 1px solid #eee; display: flex; flex-direction: column; gap: 10px; }
-        .license-item { display: flex; align-items: center; gap: 10px; position: relative; cursor: pointer; padding: 5px 0; }
-        
-        .license-item input[type="radio"] { appearance: none; -webkit-appearance: none; width: 18px; height: 18px; border: 2px solid #aaa; border-radius: 50%; background-color: #fff; cursor: pointer; display: grid; place-content: center; transition: 0.15s; margin: 0; flex-shrink: 0; }
-        .license-item input[type="radio"]::before { content: ""; width: 10px; height: 10px; border-radius: 50%; transform: scale(0); transition: 0.15s; box-shadow: inset 10px 10px var(--ifrs-verde); }
-        .license-item input[type="radio"]:checked { border-color: var(--ifrs-verde); }
-        .license-item input[type="radio"]:checked::before { transform: scale(1); }
-        
-        .license-text { font-size: 0.9em; color: var(--ifrs-texto); flex-grow: 1; }
-        .info-icon { background: #6c757d; color: white; width: 18px; height: 18px; border-radius: 50%; font-size: 11px; display: inline-flex; align-items: center; justify-content: center; cursor: help; font-weight: bold; flex-shrink: 0; }
-        
-        .license-item:hover .tooltip-text { visibility: visible; opacity: 1; }
-        .tooltip-text { visibility: hidden; width: 280px; background-color: #333; color: #fff; text-align: left; border-radius: 8px; padding: 12px; position: absolute; z-index: 100; bottom: 130%; left: 30px; opacity: 0; transition: opacity 0.3s; font-size: 12px; line-height: 1.4; pointer-events: none; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
-        .tooltip-text::after { content: ""; position: absolute; top: 100%; left: 20px; margin-left: -5px; border-width: 5px; border-style: solid; border-color: #333 transparent transparent transparent; }
-
-        .btn-close-modal { position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 24px; cursor: pointer; color: #999; }
-        .btn-salvar { background-color: var(--ifrs-verde); color: white; border: none; padding: 14px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.2s; width: 100%; font-size: 16px; margin-top: 10px; }
-        .btn-salvar:hover { background-color: var(--ifrs-verde-escuro); transform: translateY(-1px); }
+        .btn-salvar { background-color: var(--ifrs-verde); color: white; border: none; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.2s; width: 100%; font-size: 15px; }
+        .btn-salvar:hover { background-color: var(--ifrs-verde-escuro); }
         
         @media (max-width: 768px) {
             .top-buttons { position: static; flex-direction: column; width: 100%; margin-bottom: 20px; }
             .header-main { flex-direction: column; text-align: center; }
             .logo-ifrs { width: 100px; }
-            .header-titles h1 { font-size: 1.5em; }
-            .header-titles p.subtitle { font-size: 1em; }
-            .tooltip-text { width: 240px; left: 10px; }
         }
 
         .loading { text-align: center; padding: 40px; color: #777; font-weight: bold; line-height: 1.5; }
@@ -85,55 +60,12 @@
 </head>
 <body>
 
-<div id="requestModal" class="modal-overlay">
-    <div class="modal-content">
-        <button class="btn-close-modal" onclick="closeRequestModal()">×</button>
-        <h2>📝 Solicitar Novo Software</h2>
-        <form id="softwareRequestForm" onsubmit="submitRequest(event)">
-            <div class="form-group">
-                <label class="main-label">Nome do Software *</label>
-                <input type="text" id="reqName" required placeholder="Ex: QGIS, Android Studio, Microsoft Office...">
-            </div>
-
-            <div class="form-group">
-                <label class="main-label">Tipo de Licença *</label>
-                <div class="license-options-container">
-                    <label class="license-item"><input type="radio" name="license" value="Software Proprietário" required><span class="license-text">Software Proprietário</span><span class="info-icon">?</span><span class="tooltip-text"><b>Software Proprietário:</b> O código-fonte é fechado e a cópia, modificação ou redistribuição são proibidas. O usuário adquire apenas o direito de uso.</span></label>
-                    <label class="license-item"><input type="radio" name="license" value="Open Source / Software Livre"><span class="license-text">Open Source / Software Livre</span><span class="info-icon">?</span><span class="tooltip-text"><b>Open Source / Software Livre:</b> Concede liberdade para executar, estudar, modificar e redistribuir o software. Exemplos incluem GNU GPL, MIT e Apache.</span></label>
-                    <label class="license-item"><input type="radio" name="license" value="Freeware"><span class="license-text">Freeware</span><span class="info-icon">?</span><span class="tooltip-text"><b>Freeware:</b> Software gratuito, mas não necessariamente "livre". O desenvolvedor mantém os direitos autorais e pode proibir modificações.</span></label>
-                    <label class="license-item"><input type="radio" name="license" value="Shareware"><span class="license-text">Shareware</span><span class="info-icon">?</span><span class="tooltip-text"><b>Shareware:</b> Software disponibilizado gratuitamente por tempo ou funcionalidade limitada. Após o período de teste, o pagamento é solicitado.</span></label>
-                    <label class="license-item"><input type="radio" name="license" value="SaaS (Software as a Service)"><span class="license-text">SaaS (Software as a Service)</span><span class="info-icon">?</span><span class="tooltip-text"><b>SaaS (Software as a Service):</b> Modelo baseado em nuvem, onde o software é acessado via internet com pagamento recorrente (assinatura), comum em plataformas SaaS.</span></label>
-                    <label class="license-item"><input type="radio" name="license" value="Adware"><span class="license-text">Adware</span><span class="info-icon">?</span><span class="tooltip-text"><b>Adware:</b> Software gratuito que exibe publicidade, muitas vezes removida com a compra da licença.</span></label>
-                    <label class="license-item"><input type="radio" name="license" value="Licença Perpétua"><span class="license-text">Licença Perpétua</span><span class="info-icon">?</span><span class="tooltip-text"><b>Licença Perpétua:</b> Compra-se o direito de usar uma versão específica do software para sempre, sem precisar renovar, mas sem atualizações futuras incluídas.</span></label>
-                    <label class="license-item"><input type="radio" name="license" value="EULA (End User License Agreement)"><span class="license-text">EULA (End User License Agreement)</span><span class="info-icon">?</span><span class="tooltip-text"><b>EULA (End User License Agreement):</b> Contrato de Licença de Usuário Final, comum em todos os softwares, definindo as regras de uso.</span></label>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label class="main-label">Link para Download / Site Oficial</label>
-                <input type="url" id="reqLink" placeholder="https://www.software.com/download">
-            </div>
-
-            <div class="form-group">
-                <label class="main-label">Nome do Solicitante *</label>
-                <input type="text" id="reqUser" required placeholder="Seu nome completo">
-            </div>
-
-            <div class="form-group">
-                <label class="main-label">E-mail Institucional *</label>
-                <input type="email" id="reqEmail" required placeholder="exemplo@canoas.ifrs.edu.br">
-            </div>
-
-            <button type="submit" class="btn-salvar">Enviar para Análise da TI</button>
-        </form>
-    </div>
-</div>
-
 <div id="passwordModal" class="modal-overlay">
-    <div class="modal-content" style="max-width: 350px;">
+    <div class="modal-content">
         <h3>🔒 Acesso Restrito</h3>
+        <p style="font-size: 13px; color: #666; margin-bottom: 15px;">Insira a senha cadastrada na aba "Config" da planilha.</p>
         <div class="form-group">
-            <input type="password" id="adminPasswordInput" placeholder="Digite a senha do painel...">
+            <input type="password" id="adminPasswordInput" placeholder="Sua senha..." onkeypress="if(event.key === 'Enter') confirmPassword()">
         </div>
         <div style="display:flex; gap:10px;">
             <button class="btn-admin-toggle" style="flex:1" onclick="closePasswordModal()">Cancelar</button>
@@ -144,7 +76,6 @@
 
 <div class="container">
     <div class="top-buttons">
-        <button class="btn-request" onclick="openRequestModal()">➕ Solicitar Software</button>
         <button id="btnToggleAdmin" class="btn-admin-toggle" onclick="toggleAdmin()">🔒 Acesso Restrito</button>
     </div>
     
@@ -157,7 +88,7 @@
     </div>
 
     <div id="adminPanel" class="add-form">
-        <h3 id="formTitle">➕ Gerenciar Inventário</h3>
+        <h3 id="formTitle" style="margin-top:0;">➕ Gerenciar Inventário</h3>
         <div style="display:flex; gap:10px; flex-wrap:wrap;">
             <div class="form-group" style="width:100px; margin:0;">
                 <input type="number" id="newId" placeholder="ID">
@@ -169,7 +100,7 @@
         <div id="labSelectors" style="margin:10px 0; display:flex; flex-wrap:wrap; gap:8px;"></div>
         <div style="display:flex; gap:10px;">
             <button id="btnSave" class="btn-salvar" style="flex:1; margin:0;" onclick="saveSoftware('add')">Salvar no Banco</button>
-            <button id="btnCancel" class="btn-admin-toggle" style="display:none; margin:0; margin-top:10px;" onclick="resetForm()">Cancelar Edição</button>
+            <button id="btnCancel" class="btn-admin-toggle" style="display:none; margin:0;" onclick="resetForm()">Cancelar Edição</button>
         </div>
     </div>
 
@@ -196,7 +127,7 @@
 </div>
 
 <script>
-    // URL DEFINITIVA
+    // URL DE PRODUÇÃO
     const GOOGLE_APP_URL = "https://script.google.com/macros/s/AKfycbweYJf_YqJHVUgqvmsjJCKSS7YjX5GnwE44lHHJ70_ztnPrB90IRD2a-zxoYHE1fPfFuQ/exec"; 
     
     const LABS_PERMITIDOS = ["E10", "E09", "E08", "E07", "E06", "E05", "E04", "D04", "D05", "D06", "D10", "B2", "B2A"];
@@ -205,46 +136,6 @@
     let isAdminMode = false;
     let senhaConfirmada = ""; 
     let labsSelecionados = [];
-
-    function openRequestModal() { document.getElementById('requestModal').style.display = 'flex'; }
-    function closeRequestModal() { document.getElementById('requestModal').style.display = 'none'; }
-
-    async function submitRequest(event) {
-        event.preventDefault();
-        const email = document.getElementById('reqEmail').value;
-        
-        if (!email.endsWith("@canoas.ifrs.edu.br")) {
-            alert("⚠️ Por favor, utilize seu e-mail institucional @canoas.ifrs.edu.br");
-            return;
-        }
-
-        const btn = event.target.querySelector('button[type="submit"]');
-        btn.disabled = true; btn.innerText = "⏳ Enviando...";
-
-        const dados = {
-            action: "solicitar",
-            nomeSoftware: document.getElementById('reqName').value,
-            licenca: document.querySelector('input[name="license"]:checked').value,
-            link: document.getElementById('reqLink').value,
-            solicitante: document.getElementById('reqUser').value,
-            email: email
-        };
-
-        try {
-            await fetch(GOOGLE_APP_URL, {
-                method: 'POST',
-                mode: 'no-cors',
-                body: JSON.stringify(dados)
-            });
-            alert("✅ Solicitação enviada com sucesso! Ela será analisada pela equipe de TI.");
-            closeRequestModal();
-            document.getElementById('softwareRequestForm').reset();
-        } catch (e) {
-            alert("❌ Erro ao enviar. Verifique sua conexão com a internet.");
-        } finally {
-            btn.disabled = false; btn.innerText = "Enviar para Análise da TI";
-        }
-    }
 
     function toggleAdmin() {
         if (isAdminMode) {
@@ -255,12 +146,12 @@
         } else {
             document.getElementById('adminPasswordInput').value = "";
             document.getElementById('passwordModal').style.display = 'flex';
+            document.getElementById('adminPasswordInput').focus();
         }
     }
 
     function closePasswordModal() { document.getElementById('passwordModal').style.display = 'none'; }
 
-    // --- NOVA VALIDAÇÃO DE SENHA COM DETECTOR DE ERRO ---
     async function confirmPassword() {
         const senha = document.getElementById('adminPasswordInput').value;
         if(!senha) return;
@@ -275,14 +166,13 @@
             let dados;
             try {
                 dados = JSON.parse(textoGoogle);
-            } catch (parseError) {
-                alert("❌ O Google bloqueou a validação. Certifique-se de que a Implantação está como 'Qualquer Pessoa'.");
-                btn.innerText = "Entrar";
-                return;
+            } catch (err) {
+                alert("❌ Erro de permissão. O Google bloqueou a validação.");
+                btn.innerText = "Entrar"; return;
             }
 
             if (dados.erro) {
-                alert("Erro da Planilha: " + dados.erro);
+                alert("Erro: " + dados.erro);
             } else if (dados.sucesso) {
                 isAdminMode = true; senhaConfirmada = senha;
                 document.getElementById('adminPanel').style.display = 'flex';
@@ -290,7 +180,7 @@
                 closePasswordModal();
                 renderTable();
             } else { 
-                alert("❌ Senha incorreta! Verifique se a senha na aba Config está correta e não tem espaços."); 
+                alert("❌ Senha incorreta!"); 
             }
         } catch(e) { 
             alert("Erro de conexão ao validar senha."); 
@@ -299,7 +189,6 @@
         }
     }
 
-    // --- NOVO CARREGAMENTO COM RADAR DE ERRO ---
     async function loadData() {
         const ind = document.getElementById('loadingIndicator');
         try {
@@ -309,18 +198,17 @@
             try {
                 softwareData = JSON.parse(textoGoogle);
             } catch (err) {
-                // Se cair aqui, a permissão do script do Google está errada.
-                ind.innerHTML = `<div class="error-box"><b>❌ ALERTA DE CONFIGURAÇÃO:</b> O Google bloqueou o acesso aos dados.<br><br>Volte no Google Script e verifique se você fez a <b>Nova Implantação</b> com as opções:<br>Executar como: <b>Eu</b><br>Quem tem acesso: <b>Qualquer pessoa</b>.</div>`;
+                ind.innerHTML = `<div class="error-box"><b>❌ ALERTA:</b> O Google bloqueou o acesso. Verifique as permissões de Implantação.</div>`;
                 return;
             }
             
             if (softwareData.erro) {
-                ind.innerHTML = `<div class="error-box"><b>❌ Erro Retornado pelo Script:</b><br>${softwareData.erro}</div>`;
+                ind.innerHTML = `<div class="error-box"><b>❌ Erro na Planilha:</b><br>${softwareData.erro}</div>`;
                 return;
             }
 
             if (!Array.isArray(softwareData)) {
-                 ind.innerHTML = `<div class="error-box"><b>❌ Erro:</b> O formato dos dados não é uma lista válida.</div>`;
+                 ind.innerHTML = `<div class="error-box"><b>❌ Erro:</b> Dados inválidos recebidos.</div>`;
                  return;
             }
 
@@ -328,17 +216,16 @@
             document.getElementById('softwareTable').style.display = 'table';
             renderTable();
         } catch (e) { 
-            ind.innerHTML = `<div class="error-box"><b>❌ Falha de Conexão:</b> Não foi possível acessar o Google Script. Verifique sua internet ou a URL.</div>`;
+            ind.innerHTML = `<div class="error-box"><b>❌ Falha de Conexão:</b> Não foi possível acessar a planilha.</div>`;
         }
     }
 
-    // --- RENDERIZAÇÃO BLINDADA ---
     function renderTable() {
         const tbody = document.getElementById('tableBody');
         tbody.innerHTML = '';
         
         if (!softwareData || softwareData.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding: 20px;">Nenhum software cadastrado na planilha ainda.</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding: 20px;">Nenhum software encontrado na planilha.</td></tr>';
         } else {
             softwareData.sort((a,b) => (parseInt(a.id) || 0) - (parseInt(b.id) || 0)).forEach(sw => {
                 const row = document.createElement('tr');
@@ -415,7 +302,7 @@
     }
 
     async function apagarSoftware(id) {
-        if(!confirm(`Deseja realmente apagar o software ID ${id} do inventário?`)) return;
+        if(!confirm(`Deseja realmente apagar o software ID ${id}?`)) return;
         try {
             await fetch(GOOGLE_APP_URL, {
                 method: 'POST',

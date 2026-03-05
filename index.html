@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -9,26 +11,31 @@
     <link rel="apple-touch-icon" href="ifrs.png">
 
     <style>
-        :root { --ifrs-verde: #32a041; --ifrs-verde-escuro: #257a31; --ifrs-cinza: #f4f4f4; --ifrs-texto: #333333; --ifrs-amarelo: #ffc107; }
+        :root { --ifrs-verde: #32a041; --ifrs-verde-escuro: #257a31; --ifrs-cinza: #f4f4f4; --ifrs-texto: #333333; --ifrs-amarelo: #ffc107; --cor-borda: #ccc; }
+        
         * { box-sizing: border-box; }
         body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #e9ecef; margin: 0; padding: 20px; color: var(--ifrs-texto); user-select: none; }
         
         .container { max-width: 1200px; margin: auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); border-top: 8px solid var(--ifrs-verde); position: relative; }
         
+        /* Botões de Topo */
         .top-buttons { position: absolute; top: 30px; right: 30px; display: flex; gap: 10px; z-index: 100; }
         .btn-request { background-color: var(--ifrs-amarelo); color: #212529; border: none; padding: 8px 15px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 0.9em; transition: 0.2s; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         .btn-request:hover { background-color: #e0a800; transform: translateY(-2px); }
         .btn-admin-toggle { background: #fff; border: 1px solid #ccc; color: #666; padding: 8px 15px; border-radius: 6px; cursor: pointer; font-size: 0.85em; transition: 0.2s; font-weight: bold; }
         
+        /* Cabeçalho */
         .header-main { display: flex; align-items: center; gap: 15px; margin-bottom: 30px; border-bottom: 2px solid var(--ifrs-cinza); padding-bottom: 20px; }
         .logo-ifrs { width: 125px; height: auto; } 
         .header-titles h1 { color: var(--ifrs-verde-escuro); margin: 0; font-size: 2.2em; }
         .header-titles p.subtitle { color: #666; margin: 5px 0 0 0; font-weight: bold; font-size: 1.25em; }
 
+        /* Controles */
         .header-controls, .add-form { background: var(--ifrs-cinza); padding: 20px; border-radius: 8px; margin-bottom: 20px; }
         .header-controls { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
         .add-form { border-left: 5px solid var(--ifrs-verde); display: none; flex-direction: column; gap: 15px; }
         
+        /* Tabela Responsiva */
         .table-container { width: 100%; overflow-x: auto; margin-top: 10px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.05); }
         table { width: 100%; border-collapse: collapse; min-width: 750px; }
         th { background-color: var(--ifrs-verde); color: white; padding: 15px; text-align: left; text-transform: uppercase; font-size: 0.85em; position: sticky; top: 0; z-index: 5; }
@@ -37,23 +44,44 @@
         
         .lab-badge { background: #d4edda; color: #155724; padding: 4px 10px; border-radius: 4px; font-size: 0.8em; font-weight: bold; margin-right: 5px; border: 1px solid #c3e6cb; display: inline-block; margin-bottom: 4px; }
         
+        /* ========================================= */
+        /* MODAL DE SOLICITAÇÃO - DESIGN AJUSTADO    */
+        /* ========================================= */
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); justify-content: center; align-items: center; z-index: 2000; padding: 15px; }
-        .modal-content { background: white; padding: 25px; border-radius: 12px; width: 100%; max-width: 500px; position: relative; max-height: 90vh; overflow-y: auto; }
+        .modal-content { background: white; padding: 25px; border-radius: 12px; width: 100%; max-width: 550px; position: relative; max-height: 90vh; overflow-y: auto; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
         .modal-content h2 { color: var(--ifrs-verde-escuro); margin: 0 0 15px 0; font-size: 1.5em; border-bottom: 2px solid var(--ifrs-cinza); padding-bottom: 10px; }
         
         .form-group { margin-bottom: 15px; text-align: left; }
-        .form-group label { display: block; font-weight: bold; margin-bottom: 5px; font-size: 0.9em; }
-        .form-group input, .form-group select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px; }
+        .form-group label.main-label { display: block; font-weight: bold; margin-bottom: 8px; font-size: 0.95em; color: #444; }
+        .form-group input[type="text"], .form-group input[type="email"], .form-group input[type="url"] { width: 100%; padding: 12px; border: 1px solid var(--cor-borda); border-radius: 8px; font-size: 14px; transition: 0.2s; }
+        .form-group input:focus { border-color: var(--ifrs-verde); outline: none; box-shadow: 0 0 0 3px rgba(50,160,65,0.15); }
         
-        .license-options { display: flex; flex-direction: column; gap: 8px; background: #f9f9f9; padding: 10px; border-radius: 6px; }
-        .license-item { display: flex; align-items: center; gap: 8px; position: relative; cursor: help; font-size: 0.9em; }
-        .info-icon { background: #666; color: white; width: 18px; height: 18px; border-radius: 50%; font-size: 11px; display: inline-flex; align-items: center; justify-content: center; }
+        /* Container das Opções de Licença */
+        .license-options-container { background: #f9f9f9; padding: 15px; border-radius: 8px; border: 1px solid #eee; display: flex; flex-direction: column; gap: 10px; }
+        
+        /* FLEXBOX PARA ALINHAMENTO PERFEITO (Correção do "torto") */
+        .license-item { display: flex; align-items: center; gap: 10px; position: relative; cursor: pointer; padding: 5px 0; }
+        
+        /* Estilo customizado do Radio Button */
+        .license-item input[type="radio"] { appearance: none; -webkit-appearance: none; width: 18px; height: 18px; border: 2px solid #aaa; border-radius: 50%; background-color: #fff; cursor: pointer; display: grid; place-content: center; transition: 0.15s; margin: 0; flex-shrink: 0; /* Impede que o círculo amasse */ }
+        .license-item input[type="radio"]::before { content: ""; width: 10px; height: 10px; border-radius: 50%; transform: scale(0); transition: 0.15s; box-shadow: inset 10px 10px var(--ifrs-verde); }
+        .license-item input[type="radio"]:checked { border-color: var(--ifrs-verde); }
+        .license-item input[type="radio"]:checked::before { transform: scale(1); }
+        
+        /* Texto da Licença */
+        .license-text { font-size: 0.9em; color: var(--ifrs-texto); flex-grow: 1; /* Ocupa o espaço restante */ }
+        
+        /* Ícone de Informação (Tooltip) */
+        .info-icon { background: #6c757d; color: white; width: 18px; height: 18px; border-radius: 50%; font-size: 11px; display: inline-flex; align-items: center; justify-content: center; cursor: help; font-weight: bold; flex-shrink: 0; }
+        
+        /* Lógica do Tooltip (Aparecer ao passar o mouse) */
         .license-item:hover .tooltip-text { visibility: visible; opacity: 1; }
-        .tooltip-text { visibility: hidden; width: 260px; background-color: #333; color: #fff; text-align: left; border-radius: 6px; padding: 12px; position: absolute; z-index: 100; bottom: 125%; left: 0; opacity: 0; transition: opacity 0.3s; font-size: 12px; pointer-events: none; }
+        .tooltip-text { visibility: hidden; width: 280px; background-color: #333; color: #fff; text-align: left; border-radius: 8px; padding: 12px; position: absolute; z-index: 100; bottom: 130%; left: 30px; /* Alinhado após o radio */ opacity: 0; transition: opacity 0.3s; font-size: 12px; line-height: 1.4; pointer-events: none; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+        .tooltip-text::after { content: ""; position: absolute; top: 100%; left: 20px; margin-left: -5px; border-width: 5px; border-style: solid; border-color: #333 transparent transparent transparent; }
 
         .btn-close-modal { position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 24px; cursor: pointer; color: #999; }
-        .btn-salvar { background-color: var(--ifrs-verde); color: white; border: none; padding: 12px; border-radius: 6px; cursor: pointer; font-weight: bold; transition: 0.2s; width: 100%; }
-        .btn-salvar:hover { background-color: var(--ifrs-verde-escuro); }
+        .btn-salvar { background-color: var(--ifrs-verde); color: white; border: none; padding: 14px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.2s; width: 100%; font-size: 16px; margin-top: 10px; }
+        .btn-salvar:hover { background-color: var(--ifrs-verde-escuro); transform: translateY(-1px); }
         
         @media (max-width: 768px) {
             .top-buttons { position: static; flex-direction: column; width: 100%; margin-bottom: 20px; }
@@ -61,7 +89,9 @@
             .logo-ifrs { width: 100px; }
             .header-titles h1 { font-size: 1.5em; }
             .header-titles p.subtitle { font-size: 1em; }
+            .tooltip-text { width: 240px; left: 10px; } /* Ajuste tooltip no mobile */
         }
+
         .loading { text-align: center; padding: 40px; color: #777; font-weight: bold; }
     </style>
 </head>
@@ -70,50 +100,92 @@
 <div id="requestModal" class="modal-overlay">
     <div class="modal-content">
         <button class="btn-close-modal" onclick="closeRequestModal()">×</button>
-        <h2>📝 Solicitar Software</h2>
+        <h2>📝 Solicitar Novo Software</h2>
         <form id="softwareRequestForm" onsubmit="submitRequest(event)">
             <div class="form-group">
-                <label>Nome do Software *</label>
-                <input type="text" id="reqName" required placeholder="Ex: QGIS, Android Studio...">
+                <label class="main-label">Nome do Software *</label>
+                <input type="text" id="reqName" required placeholder="Ex: QGIS, Android Studio, Microsoft Office...">
             </div>
 
             <div class="form-group">
-                <label>Tipo de Licença *</label>
-                <div class="license-options">
+                <label class="main-label">Tipo de Licença *</label>
+                <div class="license-options-container">
+                    
                     <label class="license-item">
-                        <input type="radio" name="license" value="Freeware" required> Freeware
+                        <input type="radio" name="license" value="Software Proprietário" required>
+                        <span class="license-text">Software Proprietário</span>
                         <span class="info-icon">?</span>
-                        <span class="tooltip-text"><b>Freeware:</b> Software gratuito, protegido por direitos autorais, mas distribuído sem custo monetário para o uso final. Geralmente, o código-fonte não é disponibilizado.</span>
+                        <span class="tooltip-text"><b>Software Proprietário:</b> O código-fonte é fechado e a cópia, modificação ou redistribuição são proibidas. O usuário adquire apenas o direito de uso.</span>
                     </label>
+                    
                     <label class="license-item">
-                        <input type="radio" name="license" value="Open Source"> Open Source
+                        <input type="radio" name="license" value="Open Source / Software Livre">
+                        <span class="license-text">Open Source / Software Livre</span>
                         <span class="info-icon">?</span>
-                        <span class="tooltip-text"><b>Open Source (Código Aberto):</b> Software cujo código-fonte é disponibilizado publicamente, permitindo que qualquer pessoa estude, modifique e redistribua o programa.</span>
+                        <span class="tooltip-text"><b>Open Source / Software Livre:</b> Concede liberdade para executar, estudar, modificar e redistribuir o software. Exemplos incluem GNU GPL, MIT e Apache.</span>
                     </label>
+
                     <label class="license-item">
-                        <input type="radio" name="license" value="Shareware"> Shareware
+                        <input type="radio" name="license" value="Freeware">
+                        <span class="license-text">Freeware</span>
                         <span class="info-icon">?</span>
-                        <span class="tooltip-text"><b>Shareware:</b> Software comercial distribuído gratuitamente, mas com limitações de tempo ou funcionalidade. Exige pagamento após período de teste.</span>
+                        <span class="tooltip-text"><b>Freeware:</b> Software gratuito, mas não necessariamente "livre". O desenvolvedor mantém os direitos autorais e pode proibir modificações.</span>
                     </label>
+
+                    <label class="license-item">
+                        <input type="radio" name="license" value="Shareware">
+                        <span class="license-text">Shareware</span>
+                        <span class="info-icon">?</span>
+                        <span class="tooltip-text"><b>Shareware:</b> Software disponibilizado gratuitamente por tempo ou funcionalidade limitada. Após o período de teste, o pagamento é solicitado.</span>
+                    </label>
+
+                    <label class="license-item">
+                        <input type="radio" name="license" value="SaaS (Software as a Service)">
+                        <span class="license-text">SaaS (Software as a Service)</span>
+                        <span class="info-icon">?</span>
+                        <span class="tooltip-text"><b>SaaS (Software as a Service):</b> Modelo baseado em nuvem, onde o software é acessado via internet com pagamento recorrente (assinatura), comum em plataformas SaaS.</span>
+                    </label>
+
+                    <label class="license-item">
+                        <input type="radio" name="license" value="Adware">
+                        <span class="license-text">Adware</span>
+                        <span class="info-icon">?</span>
+                        <span class="tooltip-text"><b>Adware:</b> Software gratuito que exibe publicidade, muitas vezes removida com a compra da licença.</span>
+                    </label>
+
+                    <label class="license-item">
+                        <input type="radio" name="license" value="Licença Perpétua">
+                        <span class="license-text">Licença Perpétua</span>
+                        <span class="info-icon">?</span>
+                        <span class="tooltip-text"><b>Licença Perpétua:</b> Compra-se o direito de usar uma versão específica do software para sempre, sem precisar renovar, mas sem atualizações futuras incluídas.</span>
+                    </label>
+
+                    <label class="license-item">
+                        <input type="radio" name="license" value="EULA (End User License Agreement)">
+                        <span class="license-text">EULA (End User License Agreement)</span>
+                        <span class="info-icon">?</span>
+                        <span class="tooltip-text"><b>EULA (End User License Agreement):</b> Contrato de Licença de Usuário Final, comum em todos os softwares, definindo as regras de uso.</span>
+                    </label>
+
                 </div>
             </div>
 
             <div class="form-group">
-                <label>Link para Download / Site Oficial</label>
-                <input type="url" id="reqLink" placeholder="https://www.software.com">
+                <label class="main-label">Link para Download / Site Oficial</label>
+                <input type="url" id="reqLink" placeholder="https://www.software.com/download">
             </div>
 
             <div class="form-group">
-                <label>Nome do Solicitante *</label>
+                <label class="main-label">Nome do Solicitante *</label>
                 <input type="text" id="reqUser" required placeholder="Seu nome completo">
             </div>
 
             <div class="form-group">
-                <label>E-mail Institucional *</label>
+                <label class="main-label">E-mail Institucional *</label>
                 <input type="email" id="reqEmail" required placeholder="exemplo@canoas.ifrs.edu.br">
             </div>
 
-            <button type="submit" class="btn-salvar">Enviar para Análise</button>
+            <button type="submit" class="btn-salvar">Enviar para Análise da TI</button>
         </form>
     </div>
 </div>
@@ -124,7 +196,7 @@
         <input type="password" id="adminPasswordInput" style="width:100%; padding:12px; margin:15px 0; border:1px solid #ccc; border-radius:6px;" placeholder="Senha...">
         <div style="display:flex; gap:10px;">
             <button class="btn-admin-toggle" style="flex:1" onclick="closePasswordModal()">Cancelar</button>
-            <button class="btn-salvar" style="flex:1" onclick="confirmPassword()">Entrar</button>
+            <button class="btn-salvar" style="flex:1; margin:0;" onclick="confirmPassword()">Entrar</button>
         </div>
     </div>
 </div>
@@ -151,7 +223,7 @@
         </div>
         <div id="labSelectors" style="margin:10px 0; display:flex; flex-wrap:wrap; gap:8px;"></div>
         <div style="display:flex; gap:10px;">
-            <button id="btnSave" class="btn-salvar" style="flex:1" onclick="saveSoftware('add')">Salvar no Banco</button>
+            <button id="btnSave" class="btn-salvar" style="flex:1; margin:0;" onclick="saveSoftware('add')">Salvar no Banco</button>
             <button id="btnCancel" class="btn-admin-toggle" style="display:none" onclick="resetForm()">Cancelar</button>
         </div>
     </div>
@@ -180,7 +252,7 @@
 
 <script>
     // === URL ATUALIZADA EXATAMENTE COMO VOCÊ MANDOU ===
-    const GOOGLE_APP_URL = "https://script.google.com/macros/s/AKfycbzeFJrAYn4tnnU0E6F6aSnixorgiPStTc06qunS8Lx32V1zR931nfDjbB2YDUWZ1AAWrA/exec"; 
+    const GOOGLE_APP_URL = "https://script.google.com/macros/s/AKfycbVCkmrdj9eBnlS87OJW5g3tOleKLfcilD76Lw4rKioHzhpOL9Gr8gGMWfjhwbCXVs5XA/exec"; 
     
     const LABS_PERMITIDOS = ["E10", "E09", "E08", "E07", "E06", "E05", "E04", "D04", "D05", "D06", "D10", "B2", "B2A"];
     
@@ -202,12 +274,13 @@
             return;
         }
 
-        const btn = event.target.querySelector('button');
+        const btn = event.target.querySelector('button[type="submit"]');
         btn.disabled = true; btn.innerText = "⏳ Enviando...";
 
         const dados = {
             action: "solicitar",
             nomeSoftware: document.getElementById('reqName').value,
+            // Pega o valor do radio button selecionado
             licenca: document.querySelector('input[name="license"]:checked').value,
             link: document.getElementById('reqLink').value,
             solicitante: document.getElementById('reqUser').value,
@@ -220,13 +293,13 @@
                 mode: 'no-cors',
                 body: JSON.stringify(dados)
             });
-            alert("✅ Solicitação enviada! Os dados foram registrados na planilha.");
+            alert("✅ Solicitação enviada com sucesso! Ela será analisada pela equipe de TI.");
             closeRequestModal();
             document.getElementById('softwareRequestForm').reset();
         } catch (e) {
-            alert("❌ Erro ao enviar. Verifique sua conexão.");
+            alert("❌ Erro ao enviar. Verifique sua conexão com a internet.");
         } finally {
-            btn.disabled = false; btn.innerText = "Enviar para Análise";
+            btn.disabled = false; btn.innerText = "Enviar para Análise da TI";
         }
     }
 

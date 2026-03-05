@@ -1,4 +1,7 @@
 
+
+
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -17,24 +20,20 @@
         
         .container { max-width: 1200px; margin: auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); border-top: 8px solid var(--ifrs-verde); position: relative; }
         
-        /* Botões de Topo */
         .top-buttons { position: absolute; top: 30px; right: 30px; display: flex; gap: 10px; z-index: 100; }
         .btn-request { background-color: var(--ifrs-amarelo); color: #212529; border: none; padding: 8px 15px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 0.9em; transition: 0.2s; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         .btn-request:hover { background-color: #e0a800; transform: translateY(-2px); }
         .btn-admin-toggle { background: #fff; border: 1px solid #ccc; color: #666; padding: 8px 15px; border-radius: 6px; cursor: pointer; font-size: 0.85em; transition: 0.2s; font-weight: bold; }
         
-        /* Cabeçalho */
         .header-main { display: flex; align-items: center; gap: 15px; margin-bottom: 30px; border-bottom: 2px solid var(--ifrs-cinza); padding-bottom: 20px; }
         .logo-ifrs { width: 125px; height: auto; } 
         .header-titles h1 { color: var(--ifrs-verde-escuro); margin: 0; font-size: 2.2em; }
         .header-titles p.subtitle { color: #666; margin: 5px 0 0 0; font-weight: bold; font-size: 1.25em; }
 
-        /* Controles */
         .header-controls, .add-form { background: var(--ifrs-cinza); padding: 20px; border-radius: 8px; margin-bottom: 20px; }
         .header-controls { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
         .add-form { border-left: 5px solid var(--ifrs-verde); display: none; flex-direction: column; gap: 15px; }
         
-        /* Tabela Responsiva */
         .table-container { width: 100%; overflow-x: auto; margin-top: 10px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.05); }
         table { width: 100%; border-collapse: collapse; min-width: 750px; }
         th { background-color: var(--ifrs-verde); color: white; padding: 15px; text-align: left; text-transform: uppercase; font-size: 0.85em; position: sticky; top: 0; z-index: 5; }
@@ -43,7 +42,6 @@
         
         .lab-badge { background: #d4edda; color: #155724; padding: 4px 10px; border-radius: 4px; font-size: 0.8em; font-weight: bold; margin-right: 5px; border: 1px solid #c3e6cb; display: inline-block; margin-bottom: 4px; }
         
-        /* MODAL DE SOLICITAÇÃO E ALINHAMENTO DAS LICENÇAS */
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); justify-content: center; align-items: center; z-index: 2000; padding: 15px; }
         .modal-content { background: white; padding: 25px; border-radius: 12px; width: 100%; max-width: 550px; position: relative; max-height: 90vh; overflow-y: auto; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
         .modal-content h2 { color: var(--ifrs-verde-escuro); margin: 0 0 15px 0; font-size: 1.5em; border-bottom: 2px solid var(--ifrs-cinza); padding-bottom: 10px; }
@@ -99,54 +97,14 @@
             <div class="form-group">
                 <label class="main-label">Tipo de Licença *</label>
                 <div class="license-options-container">
-                    <label class="license-item">
-                        <input type="radio" name="license" value="Software Proprietário" required>
-                        <span class="license-text">Software Proprietário</span>
-                        <span class="info-icon">?</span>
-                        <span class="tooltip-text"><b>Software Proprietário:</b> O código-fonte é fechado e a cópia, modificação ou redistribuição são proibidas. O usuário adquire apenas o direito de uso.</span>
-                    </label>
-                    <label class="license-item">
-                        <input type="radio" name="license" value="Open Source / Software Livre">
-                        <span class="license-text">Open Source / Software Livre</span>
-                        <span class="info-icon">?</span>
-                        <span class="tooltip-text"><b>Open Source / Software Livre:</b> Concede liberdade para executar, estudar, modificar e redistribuir o software. Exemplos incluem GNU GPL, MIT e Apache.</span>
-                    </label>
-                    <label class="license-item">
-                        <input type="radio" name="license" value="Freeware">
-                        <span class="license-text">Freeware</span>
-                        <span class="info-icon">?</span>
-                        <span class="tooltip-text"><b>Freeware:</b> Software gratuito, mas não necessariamente "livre". O desenvolvedor mantém os direitos autorais e pode proibir modificações.</span>
-                    </label>
-                    <label class="license-item">
-                        <input type="radio" name="license" value="Shareware">
-                        <span class="license-text">Shareware</span>
-                        <span class="info-icon">?</span>
-                        <span class="tooltip-text"><b>Shareware:</b> Software disponibilizado gratuitamente por tempo ou funcionalidade limitada. Após o período de teste, o pagamento é solicitado.</span>
-                    </label>
-                    <label class="license-item">
-                        <input type="radio" name="license" value="SaaS (Software as a Service)">
-                        <span class="license-text">SaaS (Software as a Service)</span>
-                        <span class="info-icon">?</span>
-                        <span class="tooltip-text"><b>SaaS (Software as a Service):</b> Modelo baseado em nuvem, onde o software é acessado via internet com pagamento recorrente (assinatura), comum em plataformas SaaS.</span>
-                    </label>
-                    <label class="license-item">
-                        <input type="radio" name="license" value="Adware">
-                        <span class="license-text">Adware</span>
-                        <span class="info-icon">?</span>
-                        <span class="tooltip-text"><b>Adware:</b> Software gratuito que exibe publicidade, muitas vezes removida com a compra da licença.</span>
-                    </label>
-                    <label class="license-item">
-                        <input type="radio" name="license" value="Licença Perpétua">
-                        <span class="license-text">Licença Perpétua</span>
-                        <span class="info-icon">?</span>
-                        <span class="tooltip-text"><b>Licença Perpétua:</b> Compra-se o direito de usar uma versão específica do software para sempre, sem precisar renovar, mas sem atualizações futuras incluídas.</span>
-                    </label>
-                    <label class="license-item">
-                        <input type="radio" name="license" value="EULA (End User License Agreement)">
-                        <span class="license-text">EULA (End User License Agreement)</span>
-                        <span class="info-icon">?</span>
-                        <span class="tooltip-text"><b>EULA (End User License Agreement):</b> Contrato de Licença de Usuário Final, comum em todos os softwares, definindo as regras de uso.</span>
-                    </label>
+                    <label class="license-item"><input type="radio" name="license" value="Software Proprietário" required><span class="license-text">Software Proprietário</span><span class="info-icon">?</span><span class="tooltip-text"><b>Software Proprietário:</b> O código-fonte é fechado e a cópia, modificação ou redistribuição são proibidas. O usuário adquire apenas o direito de uso.</span></label>
+                    <label class="license-item"><input type="radio" name="license" value="Open Source / Software Livre"><span class="license-text">Open Source / Software Livre</span><span class="info-icon">?</span><span class="tooltip-text"><b>Open Source / Software Livre:</b> Concede liberdade para executar, estudar, modificar e redistribuir o software. Exemplos incluem GNU GPL, MIT e Apache.</span></label>
+                    <label class="license-item"><input type="radio" name="license" value="Freeware"><span class="license-text">Freeware</span><span class="info-icon">?</span><span class="tooltip-text"><b>Freeware:</b> Software gratuito, mas não necessariamente "livre". O desenvolvedor mantém os direitos autorais e pode proibir modificações.</span></label>
+                    <label class="license-item"><input type="radio" name="license" value="Shareware"><span class="license-text">Shareware</span><span class="info-icon">?</span><span class="tooltip-text"><b>Shareware:</b> Software disponibilizado gratuitamente por tempo ou funcionalidade limitada. Após o período de teste, o pagamento é solicitado.</span></label>
+                    <label class="license-item"><input type="radio" name="license" value="SaaS (Software as a Service)"><span class="license-text">SaaS (Software as a Service)</span><span class="info-icon">?</span><span class="tooltip-text"><b>SaaS (Software as a Service):</b> Modelo baseado em nuvem, onde o software é acessado via internet com pagamento recorrente (assinatura), comum em plataformas SaaS.</span></label>
+                    <label class="license-item"><input type="radio" name="license" value="Adware"><span class="license-text">Adware</span><span class="info-icon">?</span><span class="tooltip-text"><b>Adware:</b> Software gratuito que exibe publicidade, muitas vezes removida com a compra da licença.</span></label>
+                    <label class="license-item"><input type="radio" name="license" value="Licença Perpétua"><span class="license-text">Licença Perpétua</span><span class="info-icon">?</span><span class="tooltip-text"><b>Licença Perpétua:</b> Compra-se o direito de usar uma versão específica do software para sempre, sem precisar renovar, mas sem atualizações futuras incluídas.</span></label>
+                    <label class="license-item"><input type="radio" name="license" value="EULA (End User License Agreement)"><span class="license-text">EULA (End User License Agreement)</span><span class="info-icon">?</span><span class="tooltip-text"><b>EULA (End User License Agreement):</b> Contrato de Licença de Usuário Final, comum em todos os softwares, definindo as regras de uso.</span></label>
                 </div>
             </div>
 
@@ -231,7 +189,7 @@
 </div>
 
 <script>
-    // === SUA URL FINAL ===
+    // URL DEFINITIVA DE PRODUÇÃO
     const GOOGLE_APP_URL = "https://script.google.com/macros/s/AKfycbweYJf_YqJHVUgqvmsjJCKSS7YjX5GnwE44lHHJ70_ztnPrB90IRD2a-zxoYHE1fPfFuQ/exec"; 
     
     const LABS_PERMITIDOS = ["E10", "E09", "E08", "E07", "E06", "E05", "E04", "D04", "D05", "D06", "D10", "B2", "B2A"];
@@ -241,7 +199,6 @@
     let senhaConfirmada = ""; 
     let labsSelecionados = [];
 
-    // --- MODAL DE SOLICITAÇÃO ---
     function openRequestModal() { document.getElementById('requestModal').style.display = 'flex'; }
     function closeRequestModal() { document.getElementById('requestModal').style.display = 'none'; }
 
@@ -282,7 +239,6 @@
         }
     }
 
-    // --- SISTEMA ADMIN ---
     function toggleAdmin() {
         if (isAdminMode) {
             isAdminMode = false; senhaConfirmada = "";
@@ -304,6 +260,12 @@
         try {
             const res = await fetch(`${GOOGLE_APP_URL}?action=verificarSenha&senha=${encodeURIComponent(senha)}`);
             const dados = await res.json();
+            
+            if (dados.erro) {
+                alert("Erro no Banco de Dados: " + dados.erro);
+                return;
+            }
+
             if (dados.sucesso) {
                 isAdminMode = true; senhaConfirmada = senha;
                 document.getElementById('adminPanel').style.display = 'flex';
@@ -311,37 +273,50 @@
                 closePasswordModal();
                 renderTable();
             } else { alert("❌ Senha incorreta!"); }
-        } catch(e) { alert("Erro ao validar senha."); }
+        } catch(e) { alert("Erro de conexão ao validar senha."); }
     }
 
     async function loadData() {
         try {
             const res = await fetch(GOOGLE_APP_URL);
             softwareData = await res.json();
+            
+            if (softwareData.erro) {
+                document.getElementById('loadingIndicator').innerHTML = `❌ Erro na Planilha: <b>${softwareData.erro}</b>`;
+                return;
+            }
+
             document.getElementById('loadingIndicator').style.display = 'none';
             document.getElementById('softwareTable').style.display = 'table';
             renderTable();
-        } catch (e) { document.getElementById('loadingIndicator').innerText = "Erro ao carregar dados. Verifique as permissões do Google Apps Script."; }
+        } catch (e) { 
+            document.getElementById('loadingIndicator').innerText = "Erro ao conectar com a planilha. Verifique a URL do Google Script."; 
+        }
     }
 
     function renderTable() {
         const tbody = document.getElementById('tableBody');
         tbody.innerHTML = '';
-        softwareData.sort((a,b) => a.id - b.id).forEach(sw => {
-            const row = document.createElement('tr');
-            const labsHTML = sw.labs.map(l => `<span class="lab-badge">${l || 'A DEFINIR'}</span>`).join('');
-            
-            row.innerHTML = `
-                <td class="admin-col" style="display:${isAdminMode ? 'table-cell' : 'none'}">
-                    <button style="cursor:pointer; background:#ffc107; border:none; padding:5px 10px; border-radius:4px;" onclick="prepararEdicao(${sw.id})">✏️</button>
-                    <button style="cursor:pointer; background:#dc3545; color:white; border:none; padding:5px 10px; border-radius:4px;" onclick="apagarSoftware(${sw.id})">🗑️</button>
-                </td>
-                <td><strong>${sw.id}</strong></td>
-                <td>${sw.name}</td>
-                <td>${labsHTML}</td>
-            `;
-            tbody.appendChild(row);
-        });
+        
+        if (softwareData.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;">Nenhum software cadastrado na planilha ainda.</td></tr>';
+        } else {
+            softwareData.sort((a,b) => a.id - b.id).forEach(sw => {
+                const row = document.createElement('tr');
+                const labsHTML = sw.labs.map(l => `<span class="lab-badge">${l || 'A DEFINIR'}</span>`).join('');
+                
+                row.innerHTML = `
+                    <td class="admin-col" style="display:${isAdminMode ? 'table-cell' : 'none'}">
+                        <button style="cursor:pointer; background:#ffc107; border:none; padding:5px 10px; border-radius:4px;" onclick="prepararEdicao(${sw.id})">✏️</button>
+                        <button style="cursor:pointer; background:#dc3545; color:white; border:none; padding:5px 10px; border-radius:4px;" onclick="apagarSoftware(${sw.id})">🗑️</button>
+                    </td>
+                    <td><strong>${sw.id}</strong></td>
+                    <td>${sw.name}</td>
+                    <td>${labsHTML}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
         filterTable();
     }
 
@@ -353,7 +328,7 @@
             const txt = r.textContent.toUpperCase();
             const show = txt.indexOf(busca) > -1;
             r.style.display = show ? '' : 'none';
-            if(show) cont++;
+            if(show && r.cells.length > 1) cont++; 
         });
         document.getElementById('resultCount').innerText = `${cont} Software(s)`;
     }

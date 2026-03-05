@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -9,109 +10,139 @@
     <link rel="apple-touch-icon" href="ifrs.png">
 
     <style>
-        :root { --ifrs-verde: #32a041; --ifrs-verde-escuro: #257a31; --ifrs-cinza: #f4f4f4; --ifrs-texto: #333333; }
+        :root { --ifrs-verde: #32a041; --ifrs-verde-escuro: #257a31; --ifrs-cinza: #f4f4f4; --ifrs-texto: #333333; --ifrs-amarelo: #ffc107; }
         
         * { box-sizing: border-box; }
         body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #e9ecef; margin: 0; padding: 20px; color: var(--ifrs-texto); user-select: none; }
         
         .container { max-width: 1200px; margin: auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); border-top: 8px solid var(--ifrs-verde); position: relative; }
         
-        /* Botão Admin */
-        .btn-admin-toggle { position: absolute; top: 30px; right: 30px; background: none; border: 1px solid #ccc; color: #666; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 0.85em; transition: 0.2s; font-weight: bold; }
-        .btn-admin-toggle:hover { background: #eee; }
+        /* Botões de Topo */
+        .top-buttons { position: absolute; top: 30px; right: 30px; display: flex; gap: 10px; z-index: 100; }
+        .btn-request { background-color: var(--ifrs-amarelo); color: #212529; border: none; padding: 8px 15px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 0.9em; transition: 0.2s; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .btn-request:hover { background-color: #e0a800; transform: translateY(-2px); }
+        .btn-admin-toggle { background: #fff; border: 1px solid #ccc; color: #666; padding: 8px 15px; border-radius: 6px; cursor: pointer; font-size: 0.85em; transition: 0.2s; font-weight: bold; }
         
         /* Cabeçalho */
         .header-main { display: flex; align-items: center; gap: 15px; margin-bottom: 30px; border-bottom: 2px solid var(--ifrs-cinza); padding-bottom: 20px; }
         .logo-ifrs { width: 125px; height: auto; } 
-        .header-titles { display: flex; flex-direction: column; justify-content: center; }
         .header-titles h1 { color: var(--ifrs-verde-escuro); margin: 0; font-size: 2.2em; }
         .header-titles p.subtitle { color: #666; margin: 5px 0 0 0; font-weight: bold; font-size: 1.25em; }
 
-        /* Controles e Formulário */
+        /* Controles */
         .header-controls, .add-form { background: var(--ifrs-cinza); padding: 20px; border-radius: 8px; margin-bottom: 20px; }
         .header-controls { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
-        
-        .add-form { border-left: 5px solid var(--ifrs-verde); display: none; flex-direction: column; gap: 15px; transition: 0.3s; }
-        .add-form h3 { width: 100%; margin: 0 0 5px 0; color: var(--ifrs-verde-escuro); font-size: 1.1em; }
-        
-        .form-row { display: flex; gap: 15px; width: 100%; flex-wrap: wrap; }
-        .input-group { display: flex; flex-direction: column; flex: 1; min-width: 200px; }
-        
-        label { font-weight: bold; color: #444; font-size: 0.9em; margin-bottom: 5px; }
-        input[type="text"], input[type="number"], input[type="password"] { padding: 12px; border: 2px solid #ccc; border-radius: 6px; outline: none; transition: 0.3s; font-size: 16px; width: 100%; }
-        input:focus { border-color: var(--ifrs-verde); }
-        input[readonly] { background-color: #e2e6ea; cursor: not-allowed; }
-        
-        /* Seleção de Labs */
-        .lab-selector { display: flex; flex-wrap: wrap; gap: 8px; width: 100%; margin-top: 5px; }
-        .lab-btn { background: #e2e3e5; color: #383d41; border: 1px solid #d6d8db; padding: 10px 18px; border-radius: 6px; font-size: 0.9em; font-weight: bold; cursor: pointer; transition: 0.2s; user-select: none; }
-        .lab-btn.selected { background: #d4edda; color: #155724; border-color: #c3e6cb; box-shadow: 0 0 5px rgba(50,160,65,0.4); }
-        
-        /* Botões de Ação */
-        .form-actions { display: flex; gap: 10px; width: 100%; flex-wrap: wrap; }
-        button.btn-salvar { background-color: var(--ifrs-verde); color: white; border: none; padding: 12px 25px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 16px; transition: 0.2s; flex: 1; min-width: 150px; }
-        button.btn-salvar:hover { background-color: var(--ifrs-verde-escuro); }
-        .btn-cancelar { background-color: #6c757d; color: white; border: none; padding: 12px 15px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 16px; flex: 1; min-width: 150px; display: none; }
-        
-        .counter { font-weight: bold; color: var(--ifrs-verde-escuro); background: #d4edda; padding: 8px 15px; border-radius: 20px; white-space: nowrap; }
+        .add-form { border-left: 5px solid var(--ifrs-verde); display: none; flex-direction: column; gap: 15px; }
         
         /* Tabela Responsiva */
         .table-container { width: 100%; overflow-x: auto; margin-top: 10px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.05); }
-        table { width: 100%; border-collapse: collapse; min-width: 700px; }
+        table { width: 100%; border-collapse: collapse; min-width: 750px; }
         th { background-color: var(--ifrs-verde); color: white; padding: 15px; text-align: left; text-transform: uppercase; font-size: 0.85em; position: sticky; top: 0; z-index: 5; }
         td { padding: 12px 15px; border-bottom: 1px solid #eee; background: white; }
         tr:nth-child(even) td { background-color: #f9f9f9; }
         
         .lab-badge { background: #d4edda; color: #155724; padding: 4px 10px; border-radius: 4px; font-size: 0.8em; font-weight: bold; margin-right: 5px; border: 1px solid #c3e6cb; display: inline-block; margin-bottom: 4px; }
-        .lab-badge.pendente { background: #e2e3e5; color: #383d41; border-color: #d6d8db; }
         
-        /* Admin Actions */
-        .admin-col { display: none; width: 120px; }
-        .btn-edit { background: #ffc107; color: #212529; border: none; padding: 7px 12px; border-radius: 4px; font-weight: bold; cursor: pointer; margin-right: 5px; }
-        .btn-delete { background: #dc3545; color: white; border: none; padding: 7px 12px; border-radius: 4px; font-weight: bold; cursor: pointer; }
+        /* MODAL DE SOLICITAÇÃO */
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); justify-content: center; align-items: center; z-index: 2000; padding: 15px; }
+        .modal-content { background: white; padding: 25px; border-radius: 12px; width: 100%; max-width: 500px; position: relative; max-height: 90vh; overflow-y: auto; }
+        .modal-content h2 { color: var(--ifrs-verde-escuro); margin-top: 0; font-size: 1.5em; border-bottom: 2px solid var(--ifrs-cinza); padding-bottom: 10px; }
         
-        /* Modal Senha */
-        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); justify-content: center; align-items: center; z-index: 1000; padding: 15px; }
-        .modal-content { background: white; padding: 30px; border-radius: 12px; width: 100%; max-width: 380px; text-align: center; }
-        .password-wrapper { display: flex; border: 2px solid #ccc; border-radius: 6px; margin: 20px 0; overflow: hidden; }
-        .password-wrapper input { border: none; flex: 1; padding: 12px; }
-        .btn-eye { background: #f4f4f4; border: none; border-left: 1px solid #ccc; padding: 0 15px; cursor: pointer; }
+        .form-group { margin-bottom: 15px; text-align: left; }
+        .form-group label { display: block; font-weight: bold; margin-bottom: 5px; font-size: 0.9em; }
+        .form-group input, .form-group select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px; }
+        
+        .license-options { display: flex; flex-direction: column; gap: 8px; background: #f9f9f9; padding: 10px; border-radius: 6px; }
+        .license-item { display: flex; align-items: center; gap: 8px; position: relative; cursor: help; font-size: 0.9em; }
+        
+        .info-icon { background: #666; color: white; width: 18px; height: 18px; border-radius: 50%; font-size: 11px; display: inline-flex; align-items: center; justify-content: center; }
+        
+        .license-item:hover .tooltip-text { visibility: visible; opacity: 1; }
+        .tooltip-text { visibility: hidden; width: 260px; background-color: #333; color: #fff; text-align: left; border-radius: 6px; padding: 12px; position: absolute; z-index: 100; bottom: 125%; left: 0; opacity: 0; transition: opacity 0.3s; font-size: 12px; pointer-events: none; }
 
-        /* MOBILE ADJUSTMENTS */
+        .btn-close-modal { position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 24px; cursor: pointer; color: #999; }
+        .btn-salvar { background-color: var(--ifrs-verde); color: white; border: none; padding: 12px; border-radius: 6px; cursor: pointer; font-weight: bold; transition: 0.2s; }
+        
         @media (max-width: 768px) {
-            body { padding: 10px; }
-            .container { padding: 20px 15px; }
+            .top-buttons { position: static; flex-direction: column; width: 100%; margin-bottom: 20px; }
             .header-main { flex-direction: column; text-align: center; }
-            .btn-admin-toggle { position: static; width: 100%; margin-bottom: 20px; }
-            .header-titles h1 { font-size: 1.6em; }
+            .logo-ifrs { width: 100px; }
+            .header-titles h1 { font-size: 1.5em; }
             .header-titles p.subtitle { font-size: 1em; }
-            .header-controls { flex-direction: column; align-items: stretch; }
-            .form-row { flex-direction: column; }
-            .input-group { min-width: 100%; }
         }
 
-        .loading, .no-result { text-align: center; padding: 40px; color: #777; font-weight: bold; }
+        .loading { text-align: center; padding: 40px; color: #777; font-weight: bold; }
     </style>
 </head>
 <body>
 
-<div id="passwordModal" class="modal-overlay">
+<div id="requestModal" class="modal-overlay">
     <div class="modal-content">
+        <button class="btn-close-modal" onclick="closeRequestModal()">×</button>
+        <h2>📝 Solicitar Software</h2>
+        <form id="softwareRequestForm" onsubmit="submitRequest(event)">
+            <div class="form-group">
+                <label>Nome do Software *</label>
+                <input type="text" id="reqName" required placeholder="Ex: QGIS, Android Studio...">
+            </div>
+
+            <div class="form-group">
+                <label>Tipo de Licença *</label>
+                <div class="license-options">
+                    <label class="license-item">
+                        <input type="radio" name="license" value="Freeware" required> Freeware
+                        <span class="info-icon">?</span>
+                        <span class="tooltip-text"><b>Freeware:</b> Gratuito para uso final, mas com código fechado. Ex: Adobe Reader, Skype.</span>
+                    </label>
+                    <label class="license-item">
+                        <input type="radio" name="license" value="Open Source"> Open Source
+                        <span class="info-icon">?</span>
+                        <span class="tooltip-text"><b>Open Source:</b> Código aberto. Permite estudar, modificar e redistribuir. Ex: VLC, LibreOffice.</span>
+                    </label>
+                    <label class="license-item">
+                        <input type="radio" name="license" value="Shareware"> Shareware
+                        <span class="info-icon">?</span>
+                        <span class="tooltip-text"><b>Shareware:</b> Período de testes gratuito. Exige pagamento para uso contínuo.</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Link para Download / Site Oficial</label>
+                <input type="url" id="reqLink" placeholder="https://www.software.com">
+            </div>
+
+            <div class="form-group">
+                <label>Nome do Solicitante *</label>
+                <input type="text" id="reqUser" required placeholder="Seu nome completo">
+            </div>
+
+            <div class="form-group">
+                <label>E-mail Institucional *</label>
+                <input type="email" id="reqEmail" required placeholder="exemplo@canoas.ifrs.edu.br">
+            </div>
+
+            <button type="submit" class="btn-salvar" style="width: 100%;">Enviar para Análise</button>
+        </form>
+    </div>
+</div>
+
+<div id="passwordModal" class="modal-overlay">
+    <div class="modal-content" style="max-width: 350px;">
         <h3>🔒 Acesso Restrito</h3>
-        <p style="color: #666; font-size: 0.9em;">Digite a senha para gerenciar softwares:</p>
-        <div class="password-wrapper">
-            <input type="password" id="adminPasswordInput" placeholder="Senha...">
-            <button class="btn-eye" onclick="togglePasswordVisibility()">👁️</button>
-        </div>
-        <div class="modal-buttons" style="display: flex; gap: 10px;">
-            <button class="btn-cancelar" style="display:block" onclick="closePasswordModal()">Cancelar</button>
-            <button class="btn-salvar" onclick="confirmPassword()">Entrar</button>
+        <input type="password" id="adminPasswordInput" style="width:100%; padding:12px; margin:15px 0; border:1px solid #ccc; border-radius:6px;" placeholder="Senha...">
+        <div style="display:flex; gap:10px;">
+            <button class="btn-admin-toggle" style="flex:1" onclick="closePasswordModal()">Cancelar</button>
+            <button class="btn-salvar" style="flex:1" onclick="confirmPassword()">Entrar</button>
         </div>
     </div>
 </div>
 
 <div class="container">
-    <button id="btnToggleAdmin" class="btn-admin-toggle" onclick="toggleAdmin()">🔒 Acesso Restrito</button>
+    <div class="top-buttons">
+        <button class="btn-request" onclick="openRequestModal()">➕ Solicitar Software</button>
+        <button id="btnToggleAdmin" class="btn-admin-toggle" onclick="toggleAdmin()">🔒 Acesso Restrito</button>
+    </div>
     
     <div class="header-main">
         <img src="ifrs.png" alt="Logo IFRS" class="logo-ifrs">
@@ -122,56 +153,43 @@
     </div>
 
     <div id="adminPanel" class="add-form">
-        <h3 id="formTitle">➕ Adicionar Novo Software</h3>
-        <div class="form-row">
-            <div class="input-group" style="flex: 0.3;">
-                <label>ID</label>
-                <input type="number" id="newId">
-            </div>
-            <div class="input-group" style="flex: 2;">
-                <label>Nome do Software</label>
-                <input type="text" id="newName" placeholder="Ex: Visual Studio Code">
-            </div>
+        <h3 id="formTitle">➕ Gerenciar Inventário</h3>
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            <input type="number" id="newId" placeholder="ID" style="width:80px; padding:10px; border:1px solid #ccc; border-radius:6px;">
+            <input type="text" id="newName" placeholder="Nome do Software" style="flex:1; padding:10px; border:1px solid #ccc; border-radius:6px;">
         </div>
-        <div class="input-group">
-            <label>Laboratórios instalados (Clique para selecionar):</label>
-            <div id="labSelectors" class="lab-selector"></div>
-        </div>
-        <div class="form-actions">
-            <button id="btnSave" class="btn-salvar" onclick="saveSoftware('add')">Salvar Dados</button>
-            <button id="btnCancel" class="btn-cancelar" onclick="resetForm()">Cancelar</button>
+        <div id="labSelectors" style="margin:10px 0; display:flex; flex-wrap:wrap; gap:8px;"></div>
+        <div style="display:flex; gap:10px;">
+            <button id="btnSave" class="btn-salvar" style="flex:1" onclick="saveSoftware('add')">Salvar no Banco</button>
+            <button id="btnCancel" class="btn-admin-toggle" style="display:none" onclick="resetForm()">Cancelar</button>
         </div>
     </div>
 
     <div class="header-controls">
-        <div class="input-group">
-            <label>🔍 Buscar Software ou Laboratório:</label>
-            <input type="text" id="searchInput" placeholder="Ex: E06 ou Java..." onkeyup="filterTable()">
-        </div>
-        <div class="counter" id="resultCount">Carregando...</div>
+        <input type="text" id="searchInput" style="flex:1; padding:12px; border-radius:6px; border:1px solid #ccc;" placeholder="🔍 Buscar software ou laboratório (ex: E06)..." onkeyup="filterTable()">
+        <div class="counter" id="resultCount" style="margin-left:15px; font-weight:bold; color:var(--ifrs-verde-escuro);">Carregando...</div>
     </div>
 
-    <div id="loadingIndicator" class="loading">⏳ Conectando ao Banco de Dados...</div>
+    <div id="loadingIndicator" class="loading">⏳ Sincronizando com a Planilha Google...</div>
 
     <div class="table-container">
         <table id="softwareTable" style="display:none;">
             <thead>
                 <tr>
-                    <th class="admin-col">Ações</th>
+                    <th class="admin-col" style="display:none">Ações</th>
                     <th style="width: 70px;">ID</th>
-                    <th>Software</th>
+                    <th>Software e Observações</th>
                     <th>Laboratórios</th>
                 </tr>
             </thead>
             <tbody id="tableBody"></tbody>
         </table>
     </div>
-    <div id="noResult" class="no-result" style="display:none;">Nenhum resultado encontrado.</div>
 </div>
 
 <script>
-    // URL do seu Google Apps Script (Mantenha esta URL)
-    const GOOGLE_APP_URL = "https://script.google.com/macros/s/AKfycbyQKP6NEhGgiOeaQjPi09iZrWl0i_FWIIsy7HnxLiCk2MYVADM-3MrRMWYUYVPPcqZLFw/exec"; 
+    // URL ATUALIZADA DO SEU SCRIPT
+    const GOOGLE_APP_URL = "https://script.google.com/macros/s/AKfycbz3evZwQI1LtuV_5PfMaJusg2HN7pPRw6yv_7k8dpAdJ2u2ok3v3hDBiFgha_5U9sEVTQ/exec"; 
     
     const LABS_PERMITIDOS = ["E10", "E09", "E08", "E07", "E06", "E05", "E04", "D04", "D05", "D06", "D10", "B2", "B2A"];
     
@@ -180,65 +198,77 @@
     let senhaConfirmada = ""; 
     let labsSelecionados = [];
 
-    function togglePasswordVisibility() {
-        const input = document.getElementById('adminPasswordInput');
-        input.type = input.type === "password" ? "text" : "password";
+    // --- MODAL DE SOLICITAÇÃO ---
+    function openRequestModal() { document.getElementById('requestModal').style.display = 'flex'; }
+    function closeRequestModal() { document.getElementById('requestModal').style.display = 'none'; }
+
+    async function submitRequest(event) {
+        event.preventDefault();
+        const email = document.getElementById('reqEmail').value;
+        
+        if (!email.endsWith("@canoas.ifrs.edu.br")) {
+            alert("⚠️ Por favor, utilize seu e-mail institucional @canoas.ifrs.edu.br");
+            return;
+        }
+
+        const btn = event.target.querySelector('button');
+        btn.disabled = true; btn.innerText = "⏳ Enviando...";
+
+        const dados = {
+            action: "solicitar",
+            nomeSoftware: document.getElementById('reqName').value,
+            licenca: document.querySelector('input[name="license"]:checked').value,
+            link: document.getElementById('reqLink').value,
+            solicitante: document.getElementById('reqUser').value,
+            email: email
+        };
+
+        try {
+            await fetch(GOOGLE_APP_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                body: JSON.stringify(dados)
+            });
+            alert("✅ Solicitação enviada! Ela aparecerá na aba 'Solicitacoes' da sua planilha.");
+            closeRequestModal();
+            document.getElementById('softwareRequestForm').reset();
+        } catch (e) {
+            alert("❌ Erro ao enviar. Verifique sua conexão.");
+        } finally {
+            btn.disabled = false; btn.innerText = "Enviar para Análise";
+        }
     }
 
-    function closePasswordModal() {
-        document.getElementById('passwordModal').style.display = 'none';
-    }
-
+    // --- SISTEMA ADMIN ---
     function toggleAdmin() {
         if (isAdminMode) {
-            isAdminMode = false;
-            senhaConfirmada = ""; 
+            isAdminMode = false; senhaConfirmada = "";
             document.getElementById('adminPanel').style.display = 'none';
             document.getElementById('btnToggleAdmin').innerHTML = '🔒 Acesso Restrito';
-            resetForm(); 
-            renderTable(); 
+            renderTable();
         } else {
             document.getElementById('adminPasswordInput').value = "";
             document.getElementById('passwordModal').style.display = 'flex';
         }
     }
 
+    function closePasswordModal() { document.getElementById('passwordModal').style.display = 'none'; }
+
     async function confirmPassword() {
         const senha = document.getElementById('adminPasswordInput').value;
-        if (!senha) return;
-        closePasswordModal();
-        document.getElementById('btnToggleAdmin').innerHTML = '⏳ Verificando...';
+        if(!senha) return;
         
         try {
             const res = await fetch(`${GOOGLE_APP_URL}?action=verificarSenha&senha=${encodeURIComponent(senha)}`);
             const dados = await res.json();
             if (dados.sucesso) {
-                isAdminMode = true;
-                senhaConfirmada = senha;
+                isAdminMode = true; senhaConfirmada = senha;
                 document.getElementById('adminPanel').style.display = 'flex';
                 document.getElementById('btnToggleAdmin').innerHTML = '🔓 Sair do Admin';
+                closePasswordModal();
                 renderTable();
-            } else {
-                alert("Senha inválida!");
-                document.getElementById('btnToggleAdmin').innerHTML = '🔒 Acesso Restrito';
-            }
-        } catch (e) { alert("Erro de conexão."); }
-    }
-
-    function criarBotoesLaboratorio() {
-        const container = document.getElementById('labSelectors');
-        container.innerHTML = ''; 
-        LABS_PERMITIDOS.forEach(lab => {
-            const btn = document.createElement('div');
-            btn.className = 'lab-btn' + (labsSelecionados.includes(lab) ? ' selected' : '');
-            btn.innerText = lab;
-            btn.onclick = () => {
-                const idx = labsSelecionados.indexOf(lab);
-                if (idx > -1) labsSelecionados.splice(idx, 1); else labsSelecionados.push(lab);
-                criarBotoesLaboratorio();
-            };
-            container.appendChild(btn);
-        });
+            } else { alert("❌ Senha incorreta!"); }
+        } catch(e) { alert("Erro ao validar senha."); }
     }
 
     async function loadData() {
@@ -256,12 +286,12 @@
         tbody.innerHTML = '';
         softwareData.sort((a,b) => a.id - b.id).forEach(sw => {
             const row = document.createElement('tr');
-            const labsHTML = sw.labs.map(l => `<span class="lab-badge ${(!l || l === 'A DEFINIR') ? 'pendente' : ''}">${l || 'A DEFINIR'}</span>`).join('');
+            const labsHTML = sw.labs.map(l => `<span class="lab-badge">${l || 'A DEFINIR'}</span>`).join('');
             
             row.innerHTML = `
-                <td class="admin-col">
-                    <button class="btn-edit" onclick="prepararEdicao(${sw.id})">✏️</button>
-                    <button class="btn-delete" onclick="apagarSoftware(${sw.id})">🗑️</button>
+                <td class="admin-col" style="display:${isAdminMode ? 'table-cell' : 'none'}">
+                    <button style="cursor:pointer" onclick="prepararEdicao(${sw.id})">✏️</button>
+                    <button style="cursor:pointer" onclick="apagarSoftware(${sw.id})">🗑️</button>
                 </td>
                 <td><strong>${sw.id}</strong></td>
                 <td>${sw.name}</td>
@@ -269,7 +299,6 @@
             `;
             tbody.appendChild(row);
         });
-        document.querySelectorAll('.admin-col').forEach(c => c.style.display = isAdminMode ? 'table-cell' : 'none');
         filterTable();
     }
 
@@ -283,19 +312,35 @@
             r.style.display = show ? '' : 'none';
             if(show) cont++;
         });
-        document.getElementById('resultCount').innerText = `${cont} Software(s) encontrados`;
-        document.getElementById('noResult').style.display = cont === 0 ? 'block' : 'none';
+        document.getElementById('resultCount').innerText = `${cont} Software(s)`;
+    }
+
+    function criarBotoesLaboratorio() {
+        const container = document.getElementById('labSelectors');
+        container.innerHTML = ''; 
+        LABS_PERMITIDOS.forEach(lab => {
+            const btn = document.createElement('div');
+            btn.className = 'lab-badge';
+            btn.style.cursor = 'pointer';
+            btn.innerText = lab;
+            btn.onclick = () => {
+                if(labsSelecionados.includes(lab)) {
+                    labsSelecionados = labsSelecionados.filter(l => l !== lab);
+                    btn.style.background = '#d4edda'; btn.style.color = '#155724';
+                } else {
+                    labsSelecionados.push(lab);
+                    btn.style.background = '#32a041'; btn.style.color = '#fff';
+                }
+            };
+            container.appendChild(btn);
+        });
     }
 
     async function saveSoftware(action) {
         const id = document.getElementById('newId').value;
         const name = document.getElementById('newName').value;
-        const labs = labsSelecionados.length ? labsSelecionados.join(", ") : "A DEFINIR";
-        
+        const labs = labsSelecionados.join(", ") || "A DEFINIR";
         if(!id || !name) return alert("Preencha ID e Nome!");
-        
-        const btn = document.getElementById('btnSave');
-        btn.disabled = true; btn.innerText = "⏳ Gravando...";
 
         try {
             await fetch(GOOGLE_APP_URL, {
@@ -303,48 +348,35 @@
                 mode: 'no-cors',
                 body: JSON.stringify({ action, id, name, labs, senha: senhaConfirmada })
             });
-            alert("Sucesso! Recarregando dados...");
-            location.reload();
-        } catch (e) { alert("Erro ao salvar."); btn.disabled = false; }
+            alert("Operação concluída!"); location.reload();
+        } catch(e) { alert("Erro ao salvar."); }
     }
 
     async function apagarSoftware(id) {
-        if(!confirm("Deseja realmente excluir este software?")) return;
+        if(!confirm("Deseja apagar?")) return;
         try {
             await fetch(GOOGLE_APP_URL, {
                 method: 'POST',
                 mode: 'no-cors',
-                body: JSON.stringify({ action: 'delete', id, senha: senhaConfirmada })
+                body: JSON.stringify({ action:'delete', id, senha: senhaConfirmada })
             });
             location.reload();
-        } catch (e) { alert("Erro ao excluir."); }
+        } catch(e) { alert("Erro ao apagar."); }
     }
 
     function prepararEdicao(id) {
         const sw = softwareData.find(s => s.id == id);
-        document.getElementById('formTitle').innerText = "✏️ Editando Software";
         document.getElementById('newId').value = sw.id;
         document.getElementById('newId').readOnly = true;
         document.getElementById('newName').value = sw.name;
-        labsSelecionados = [...sw.labs];
-        criarBotoesLaboratorio();
         document.getElementById('btnSave').onclick = () => saveSoftware('update');
         document.getElementById('btnCancel').style.display = 'block';
         window.scrollTo(0,0);
     }
 
-    function resetForm() {
-        document.getElementById('formTitle').innerText = "➕ Adicionar Novo Software";
-        document.getElementById('newId').value = "";
-        document.getElementById('newId').readOnly = false;
-        document.getElementById('newName').value = "";
-        labsSelecionados = [];
-        criarBotoesLaboratorio();
-        document.getElementById('btnSave').onclick = () => saveSoftware('add');
-        document.getElementById('btnCancel').style.display = 'none';
-    }
+    function resetForm() { location.reload(); }
 
-    window.onload = () => { criarBotoesLaboratorio(); loadData(); };
+    window.onload = () => { loadData(); criarBotoesLaboratorio(); };
 </script>
 
 </body>

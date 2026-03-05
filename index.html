@@ -48,7 +48,7 @@
         
         .form-group { margin-bottom: 15px; text-align: left; }
         .form-group label.main-label { display: block; font-weight: bold; margin-bottom: 8px; font-size: 0.95em; color: #444; }
-        .form-group input[type="text"], .form-group input[type="email"], .form-group input[type="url"] { width: 100%; padding: 12px; border: 1px solid var(--cor-borda); border-radius: 8px; font-size: 14px; transition: 0.2s; }
+        .form-group input[type="text"], .form-group input[type="email"], .form-group input[type="url"], .form-group input[type="password"], .form-group input[type="number"] { width: 100%; padding: 12px; border: 1px solid var(--cor-borda); border-radius: 8px; font-size: 14px; transition: 0.2s; }
         .form-group input:focus { border-color: var(--ifrs-verde); outline: none; box-shadow: 0 0 0 3px rgba(50,160,65,0.15); }
         
         .license-options-container { background: #f9f9f9; padding: 15px; border-radius: 8px; border: 1px solid #eee; display: flex; flex-direction: column; gap: 10px; }
@@ -79,7 +79,8 @@
             .tooltip-text { width: 240px; left: 10px; }
         }
 
-        .loading { text-align: center; padding: 40px; color: #777; font-weight: bold; }
+        .loading { text-align: center; padding: 40px; color: #777; font-weight: bold; line-height: 1.5; }
+        .error-box { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; padding: 15px; border-radius: 8px; text-align: left; margin: 20px 0; font-size: 14px; }
     </style>
 </head>
 <body>
@@ -131,7 +132,9 @@
 <div id="passwordModal" class="modal-overlay">
     <div class="modal-content" style="max-width: 350px;">
         <h3>🔒 Acesso Restrito</h3>
-        <input type="password" id="adminPasswordInput" style="width:100%; padding:12px; margin:15px 0; border:1px solid #ccc; border-radius:6px;" placeholder="Senha...">
+        <div class="form-group">
+            <input type="password" id="adminPasswordInput" placeholder="Digite a senha do painel...">
+        </div>
         <div style="display:flex; gap:10px;">
             <button class="btn-admin-toggle" style="flex:1" onclick="closePasswordModal()">Cancelar</button>
             <button class="btn-salvar" style="flex:1; margin:0;" onclick="confirmPassword()">Entrar</button>
@@ -156,18 +159,22 @@
     <div id="adminPanel" class="add-form">
         <h3 id="formTitle">➕ Gerenciar Inventário</h3>
         <div style="display:flex; gap:10px; flex-wrap:wrap;">
-            <input type="number" id="newId" placeholder="ID" style="width:80px; padding:10px; border:1px solid #ccc; border-radius:6px;">
-            <input type="text" id="newName" placeholder="Nome do Software" style="flex:1; padding:10px; border:1px solid #ccc; border-radius:6px;">
+            <div class="form-group" style="width:100px; margin:0;">
+                <input type="number" id="newId" placeholder="ID">
+            </div>
+            <div class="form-group" style="flex:1; margin:0;">
+                <input type="text" id="newName" placeholder="Nome do Software">
+            </div>
         </div>
         <div id="labSelectors" style="margin:10px 0; display:flex; flex-wrap:wrap; gap:8px;"></div>
         <div style="display:flex; gap:10px;">
             <button id="btnSave" class="btn-salvar" style="flex:1; margin:0;" onclick="saveSoftware('add')">Salvar no Banco</button>
-            <button id="btnCancel" class="btn-admin-toggle" style="display:none" onclick="resetForm()">Cancelar</button>
+            <button id="btnCancel" class="btn-admin-toggle" style="display:none; margin:0; margin-top:10px;" onclick="resetForm()">Cancelar Edição</button>
         </div>
     </div>
 
     <div class="header-controls">
-        <input type="text" id="searchInput" style="flex:1; padding:12px; border-radius:6px; border:1px solid #ccc;" placeholder="🔍 Buscar software ou laboratório (ex: E06)..." onkeyup="filterTable()">
+        <input type="text" id="searchInput" style="flex:1; padding:12px; border-radius:6px; border:1px solid var(--cor-borda); font-size:16px;" placeholder="🔍 Buscar software ou laboratório (ex: E06)..." onkeyup="filterTable()">
         <div class="counter" id="resultCount" style="margin-left:15px; font-weight:bold; color:var(--ifrs-verde-escuro);">Carregando...</div>
     </div>
 
@@ -189,7 +196,7 @@
 </div>
 
 <script>
-    // URL DEFINITIVA DE PRODUÇÃO
+    // URL DEFINITIVA
     const GOOGLE_APP_URL = "https://script.google.com/macros/s/AKfycbweYJf_YqJHVUgqvmsjJCKSS7YjX5GnwE44lHHJ70_ztnPrB90IRD2a-zxoYHE1fPfFuQ/exec"; 
     
     const LABS_PERMITIDOS = ["E10", "E09", "E08", "E07", "E06", "E05", "E04", "D04", "D05", "D06", "D10", "B2", "B2A"];
@@ -253,65 +260,101 @@
 
     function closePasswordModal() { document.getElementById('passwordModal').style.display = 'none'; }
 
+    // --- NOVA VALIDAÇÃO DE SENHA COM DETECTOR DE ERRO ---
     async function confirmPassword() {
         const senha = document.getElementById('adminPasswordInput').value;
         if(!senha) return;
         
+        const btn = document.querySelector('#passwordModal .btn-salvar');
+        btn.innerText = "⏳ Validando...";
+        
         try {
             const res = await fetch(`${GOOGLE_APP_URL}?action=verificarSenha&senha=${encodeURIComponent(senha)}`);
-            const dados = await res.json();
+            const textoGoogle = await res.text();
             
-            if (dados.erro) {
-                alert("Erro no Banco de Dados: " + dados.erro);
+            let dados;
+            try {
+                dados = JSON.parse(textoGoogle);
+            } catch (parseError) {
+                alert("❌ O Google bloqueou a validação. Certifique-se de que a Implantação está como 'Qualquer Pessoa'.");
+                btn.innerText = "Entrar";
                 return;
             }
 
-            if (dados.sucesso) {
+            if (dados.erro) {
+                alert("Erro da Planilha: " + dados.erro);
+            } else if (dados.sucesso) {
                 isAdminMode = true; senhaConfirmada = senha;
                 document.getElementById('adminPanel').style.display = 'flex';
                 document.getElementById('btnToggleAdmin').innerHTML = '🔓 Sair do Admin';
                 closePasswordModal();
                 renderTable();
-            } else { alert("❌ Senha incorreta!"); }
-        } catch(e) { alert("Erro de conexão ao validar senha."); }
-    }
-
-    async function loadData() {
-        try {
-            const res = await fetch(GOOGLE_APP_URL);
-            softwareData = await res.json();
-            
-            if (softwareData.erro) {
-                document.getElementById('loadingIndicator').innerHTML = `❌ Erro na Planilha: <b>${softwareData.erro}</b>`;
-                return;
+            } else { 
+                alert("❌ Senha incorreta! Verifique se a senha na aba Config está correta e não tem espaços."); 
             }
-
-            document.getElementById('loadingIndicator').style.display = 'none';
-            document.getElementById('softwareTable').style.display = 'table';
-            renderTable();
-        } catch (e) { 
-            document.getElementById('loadingIndicator').innerText = "Erro ao conectar com a planilha. Verifique a URL do Google Script."; 
+        } catch(e) { 
+            alert("Erro de conexão ao validar senha."); 
+        } finally {
+            btn.innerText = "Entrar";
         }
     }
 
+    // --- NOVO CARREGAMENTO COM RADAR DE ERRO ---
+    async function loadData() {
+        const ind = document.getElementById('loadingIndicator');
+        try {
+            const res = await fetch(GOOGLE_APP_URL);
+            const textoGoogle = await res.text();
+            
+            try {
+                softwareData = JSON.parse(textoGoogle);
+            } catch (err) {
+                // Se cair aqui, a permissão do script do Google está errada.
+                ind.innerHTML = `<div class="error-box"><b>❌ ALERTA DE CONFIGURAÇÃO:</b> O Google bloqueou o acesso aos dados.<br><br>Volte no Google Script e verifique se você fez a <b>Nova Implantação</b> com as opções:<br>Executar como: <b>Eu</b><br>Quem tem acesso: <b>Qualquer pessoa</b>.</div>`;
+                return;
+            }
+            
+            if (softwareData.erro) {
+                ind.innerHTML = `<div class="error-box"><b>❌ Erro Retornado pelo Script:</b><br>${softwareData.erro}</div>`;
+                return;
+            }
+
+            if (!Array.isArray(softwareData)) {
+                 ind.innerHTML = `<div class="error-box"><b>❌ Erro:</b> O formato dos dados não é uma lista válida.</div>`;
+                 return;
+            }
+
+            ind.style.display = 'none';
+            document.getElementById('softwareTable').style.display = 'table';
+            renderTable();
+        } catch (e) { 
+            ind.innerHTML = `<div class="error-box"><b>❌ Falha de Conexão:</b> Não foi possível acessar o Google Script. Verifique sua internet ou a URL.</div>`;
+        }
+    }
+
+    // --- RENDERIZAÇÃO BLINDADA ---
     function renderTable() {
         const tbody = document.getElementById('tableBody');
         tbody.innerHTML = '';
         
-        if (softwareData.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;">Nenhum software cadastrado na planilha ainda.</td></tr>';
+        if (!softwareData || softwareData.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding: 20px;">Nenhum software cadastrado na planilha ainda.</td></tr>';
         } else {
-            softwareData.sort((a,b) => a.id - b.id).forEach(sw => {
+            softwareData.sort((a,b) => (parseInt(a.id) || 0) - (parseInt(b.id) || 0)).forEach(sw => {
                 const row = document.createElement('tr');
-                const labsHTML = sw.labs.map(l => `<span class="lab-badge">${l || 'A DEFINIR'}</span>`).join('');
+                const arrayLabs = Array.isArray(sw.labs) ? sw.labs : ["A DEFINIR"];
+                const labsHTML = arrayLabs.map(l => {
+                    const labTrimmed = l.trim();
+                    return `<span class="lab-badge">${labTrimmed || 'A DEFINIR'}</span>`;
+                }).join('');
                 
                 row.innerHTML = `
                     <td class="admin-col" style="display:${isAdminMode ? 'table-cell' : 'none'}">
-                        <button style="cursor:pointer; background:#ffc107; border:none; padding:5px 10px; border-radius:4px;" onclick="prepararEdicao(${sw.id})">✏️</button>
-                        <button style="cursor:pointer; background:#dc3545; color:white; border:none; padding:5px 10px; border-radius:4px;" onclick="apagarSoftware(${sw.id})">🗑️</button>
+                        <button style="cursor:pointer; background:#ffc107; border:none; padding:5px 10px; border-radius:4px;" onclick="prepararEdicao('${sw.id}')">✏️</button>
+                        <button style="cursor:pointer; background:#dc3545; color:white; border:none; padding:5px 10px; border-radius:4px;" onclick="apagarSoftware('${sw.id}')">🗑️</button>
                     </td>
-                    <td><strong>${sw.id}</strong></td>
-                    <td>${sw.name}</td>
+                    <td><strong>${sw.id || '-'}</strong></td>
+                    <td>${sw.name || 'Sem Nome'}</td>
                     <td>${labsHTML}</td>
                 `;
                 tbody.appendChild(row);
@@ -357,7 +400,7 @@
     async function saveSoftware(action) {
         const id = document.getElementById('newId').value;
         const name = document.getElementById('newName').value;
-        const labs = labsSelecionados.join(", ") || "A DEFINIR";
+        const labs = labsSelecionados.join(",") || "A DEFINIR";
         if(!id || !name) return alert("Preencha ID e Nome!");
 
         try {
@@ -366,12 +409,13 @@
                 mode: 'no-cors',
                 body: JSON.stringify({ action, id, name, labs, senha: senhaConfirmada })
             });
-            alert("Operação concluída!"); location.reload();
-        } catch(e) { alert("Erro ao salvar."); }
+            alert("Operação concluída com sucesso!"); 
+            location.reload();
+        } catch(e) { alert("Erro de comunicação ao salvar."); }
     }
 
     async function apagarSoftware(id) {
-        if(!confirm("Deseja apagar este software do inventário?")) return;
+        if(!confirm(`Deseja realmente apagar o software ID ${id} do inventário?`)) return;
         try {
             await fetch(GOOGLE_APP_URL, {
                 method: 'POST',
@@ -379,11 +423,12 @@
                 body: JSON.stringify({ action:'delete', id, senha: senhaConfirmada })
             });
             location.reload();
-        } catch(e) { alert("Erro ao apagar."); }
+        } catch(e) { alert("Erro ao apagar o registro."); }
     }
 
     function prepararEdicao(id) {
         const sw = softwareData.find(s => s.id == id);
+        if(!sw) return;
         document.getElementById('newId').value = sw.id;
         document.getElementById('newId').readOnly = true;
         document.getElementById('newName').value = sw.name;

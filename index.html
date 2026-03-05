@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -43,9 +42,7 @@
         
         .lab-badge { background: #d4edda; color: #155724; padding: 4px 10px; border-radius: 4px; font-size: 0.8em; font-weight: bold; margin-right: 5px; border: 1px solid #c3e6cb; display: inline-block; margin-bottom: 4px; }
         
-        /* ========================================= */
-        /* MODAL DE SOLICITAÇÃO - DESIGN AJUSTADO    */
-        /* ========================================= */
+        /* MODAL DE SOLICITAÇÃO E ALINHAMENTO DAS LICENÇAS */
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); justify-content: center; align-items: center; z-index: 2000; padding: 15px; }
         .modal-content { background: white; padding: 25px; border-radius: 12px; width: 100%; max-width: 550px; position: relative; max-height: 90vh; overflow-y: auto; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
         .modal-content h2 { color: var(--ifrs-verde-escuro); margin: 0 0 15px 0; font-size: 1.5em; border-bottom: 2px solid var(--ifrs-cinza); padding-bottom: 10px; }
@@ -55,27 +52,19 @@
         .form-group input[type="text"], .form-group input[type="email"], .form-group input[type="url"] { width: 100%; padding: 12px; border: 1px solid var(--cor-borda); border-radius: 8px; font-size: 14px; transition: 0.2s; }
         .form-group input:focus { border-color: var(--ifrs-verde); outline: none; box-shadow: 0 0 0 3px rgba(50,160,65,0.15); }
         
-        /* Container das Opções de Licença */
         .license-options-container { background: #f9f9f9; padding: 15px; border-radius: 8px; border: 1px solid #eee; display: flex; flex-direction: column; gap: 10px; }
-        
-        /* FLEXBOX PARA ALINHAMENTO PERFEITO (Correção do "torto") */
         .license-item { display: flex; align-items: center; gap: 10px; position: relative; cursor: pointer; padding: 5px 0; }
         
-        /* Estilo customizado do Radio Button */
-        .license-item input[type="radio"] { appearance: none; -webkit-appearance: none; width: 18px; height: 18px; border: 2px solid #aaa; border-radius: 50%; background-color: #fff; cursor: pointer; display: grid; place-content: center; transition: 0.15s; margin: 0; flex-shrink: 0; /* Impede que o círculo amasse */ }
+        .license-item input[type="radio"] { appearance: none; -webkit-appearance: none; width: 18px; height: 18px; border: 2px solid #aaa; border-radius: 50%; background-color: #fff; cursor: pointer; display: grid; place-content: center; transition: 0.15s; margin: 0; flex-shrink: 0; }
         .license-item input[type="radio"]::before { content: ""; width: 10px; height: 10px; border-radius: 50%; transform: scale(0); transition: 0.15s; box-shadow: inset 10px 10px var(--ifrs-verde); }
         .license-item input[type="radio"]:checked { border-color: var(--ifrs-verde); }
         .license-item input[type="radio"]:checked::before { transform: scale(1); }
         
-        /* Texto da Licença */
-        .license-text { font-size: 0.9em; color: var(--ifrs-texto); flex-grow: 1; /* Ocupa o espaço restante */ }
-        
-        /* Ícone de Informação (Tooltip) */
+        .license-text { font-size: 0.9em; color: var(--ifrs-texto); flex-grow: 1; }
         .info-icon { background: #6c757d; color: white; width: 18px; height: 18px; border-radius: 50%; font-size: 11px; display: inline-flex; align-items: center; justify-content: center; cursor: help; font-weight: bold; flex-shrink: 0; }
         
-        /* Lógica do Tooltip (Aparecer ao passar o mouse) */
         .license-item:hover .tooltip-text { visibility: visible; opacity: 1; }
-        .tooltip-text { visibility: hidden; width: 280px; background-color: #333; color: #fff; text-align: left; border-radius: 8px; padding: 12px; position: absolute; z-index: 100; bottom: 130%; left: 30px; /* Alinhado após o radio */ opacity: 0; transition: opacity 0.3s; font-size: 12px; line-height: 1.4; pointer-events: none; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+        .tooltip-text { visibility: hidden; width: 280px; background-color: #333; color: #fff; text-align: left; border-radius: 8px; padding: 12px; position: absolute; z-index: 100; bottom: 130%; left: 30px; opacity: 0; transition: opacity 0.3s; font-size: 12px; line-height: 1.4; pointer-events: none; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
         .tooltip-text::after { content: ""; position: absolute; top: 100%; left: 20px; margin-left: -5px; border-width: 5px; border-style: solid; border-color: #333 transparent transparent transparent; }
 
         .btn-close-modal { position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 24px; cursor: pointer; color: #999; }
@@ -88,7 +77,7 @@
             .logo-ifrs { width: 100px; }
             .header-titles h1 { font-size: 1.5em; }
             .header-titles p.subtitle { font-size: 1em; }
-            .tooltip-text { width: 240px; left: 10px; } /* Ajuste tooltip no mobile */
+            .tooltip-text { width: 240px; left: 10px; }
         }
 
         .loading { text-align: center; padding: 40px; color: #777; font-weight: bold; }
@@ -109,63 +98,54 @@
             <div class="form-group">
                 <label class="main-label">Tipo de Licença *</label>
                 <div class="license-options-container">
-                    
                     <label class="license-item">
                         <input type="radio" name="license" value="Software Proprietário" required>
                         <span class="license-text">Software Proprietário</span>
                         <span class="info-icon">?</span>
                         <span class="tooltip-text"><b>Software Proprietário:</b> O código-fonte é fechado e a cópia, modificação ou redistribuição são proibidas. O usuário adquire apenas o direito de uso.</span>
                     </label>
-                    
                     <label class="license-item">
                         <input type="radio" name="license" value="Open Source / Software Livre">
                         <span class="license-text">Open Source / Software Livre</span>
                         <span class="info-icon">?</span>
                         <span class="tooltip-text"><b>Open Source / Software Livre:</b> Concede liberdade para executar, estudar, modificar e redistribuir o software. Exemplos incluem GNU GPL, MIT e Apache.</span>
                     </label>
-
                     <label class="license-item">
                         <input type="radio" name="license" value="Freeware">
                         <span class="license-text">Freeware</span>
                         <span class="info-icon">?</span>
                         <span class="tooltip-text"><b>Freeware:</b> Software gratuito, mas não necessariamente "livre". O desenvolvedor mantém os direitos autorais e pode proibir modificações.</span>
                     </label>
-
                     <label class="license-item">
                         <input type="radio" name="license" value="Shareware">
                         <span class="license-text">Shareware</span>
                         <span class="info-icon">?</span>
                         <span class="tooltip-text"><b>Shareware:</b> Software disponibilizado gratuitamente por tempo ou funcionalidade limitada. Após o período de teste, o pagamento é solicitado.</span>
                     </label>
-
                     <label class="license-item">
                         <input type="radio" name="license" value="SaaS (Software as a Service)">
                         <span class="license-text">SaaS (Software as a Service)</span>
                         <span class="info-icon">?</span>
                         <span class="tooltip-text"><b>SaaS (Software as a Service):</b> Modelo baseado em nuvem, onde o software é acessado via internet com pagamento recorrente (assinatura), comum em plataformas SaaS.</span>
                     </label>
-
                     <label class="license-item">
                         <input type="radio" name="license" value="Adware">
                         <span class="license-text">Adware</span>
                         <span class="info-icon">?</span>
                         <span class="tooltip-text"><b>Adware:</b> Software gratuito que exibe publicidade, muitas vezes removida com a compra da licença.</span>
                     </label>
-
                     <label class="license-item">
                         <input type="radio" name="license" value="Licença Perpétua">
                         <span class="license-text">Licença Perpétua</span>
                         <span class="info-icon">?</span>
                         <span class="tooltip-text"><b>Licença Perpétua:</b> Compra-se o direito de usar uma versão específica do software para sempre, sem precisar renovar, mas sem atualizações futuras incluídas.</span>
                     </label>
-
                     <label class="license-item">
                         <input type="radio" name="license" value="EULA (End User License Agreement)">
                         <span class="license-text">EULA (End User License Agreement)</span>
                         <span class="info-icon">?</span>
                         <span class="tooltip-text"><b>EULA (End User License Agreement):</b> Contrato de Licença de Usuário Final, comum em todos os softwares, definindo as regras de uso.</span>
                     </label>
-
                 </div>
             </div>
 
@@ -250,8 +230,8 @@
 </div>
 
 <script>
-    // === URL ATUALIZADA EXATAMENTE COMO VOCÊ MANDOU ===
-    const GOOGLE_APP_URL = "https://script.google.com/macros/s/AKfycbVCkmrdj9eBnlS87OJW5g3tOleKLfcilD76Lw4rKioHzhpOL9Gr8gGMWfjhwbCXVs5XA/exec"; 
+    // === A URL FORNECIDA NA SUA ÚLTIMA MENSAGEM FOI INSERIDA AQUI ===
+    const GOOGLE_APP_URL = "https://script.google.com/macros/s/AKfycbzeFJrAYn4tnnU0E6F6aSnixorgiPStTc06qunS8Lx32V1zR931nfDjbB2YDUWZ1AAWrA/exec"; 
     
     const LABS_PERMITIDOS = ["E10", "E09", "E08", "E07", "E06", "E05", "E04", "D04", "D05", "D06", "D10", "B2", "B2A"];
     
@@ -279,7 +259,6 @@
         const dados = {
             action: "solicitar",
             nomeSoftware: document.getElementById('reqName').value,
-            // Pega o valor do radio button selecionado
             licenca: document.querySelector('input[name="license"]:checked').value,
             link: document.getElementById('reqLink').value,
             solicitante: document.getElementById('reqUser').value,
@@ -341,7 +320,7 @@
             document.getElementById('loadingIndicator').style.display = 'none';
             document.getElementById('softwareTable').style.display = 'table';
             renderTable();
-        } catch (e) { document.getElementById('loadingIndicator').innerText = "Erro ao carregar dados."; }
+        } catch (e) { document.getElementById('loadingIndicator').innerText = "Erro ao carregar dados. Verifique as permissões do Google Apps Script."; }
     }
 
     function renderTable() {
@@ -416,7 +395,7 @@
     }
 
     async function apagarSoftware(id) {
-        if(!confirm("Deseja apagar?")) return;
+        if(!confirm("Deseja apagar este software do inventário?")) return;
         try {
             await fetch(GOOGLE_APP_URL, {
                 method: 'POST',

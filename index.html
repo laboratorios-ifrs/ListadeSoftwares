@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -11,30 +10,25 @@
 
     <style>
         :root { --ifrs-verde: #32a041; --ifrs-verde-escuro: #257a31; --ifrs-cinza: #f4f4f4; --ifrs-texto: #333333; --ifrs-amarelo: #ffc107; }
-        
         * { box-sizing: border-box; }
         body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #e9ecef; margin: 0; padding: 20px; color: var(--ifrs-texto); user-select: none; }
         
         .container { max-width: 1200px; margin: auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); border-top: 8px solid var(--ifrs-verde); position: relative; }
         
-        /* Botões de Topo */
         .top-buttons { position: absolute; top: 30px; right: 30px; display: flex; gap: 10px; z-index: 100; }
         .btn-request { background-color: var(--ifrs-amarelo); color: #212529; border: none; padding: 8px 15px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 0.9em; transition: 0.2s; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         .btn-request:hover { background-color: #e0a800; transform: translateY(-2px); }
         .btn-admin-toggle { background: #fff; border: 1px solid #ccc; color: #666; padding: 8px 15px; border-radius: 6px; cursor: pointer; font-size: 0.85em; transition: 0.2s; font-weight: bold; }
         
-        /* Cabeçalho */
         .header-main { display: flex; align-items: center; gap: 15px; margin-bottom: 30px; border-bottom: 2px solid var(--ifrs-cinza); padding-bottom: 20px; }
         .logo-ifrs { width: 125px; height: auto; } 
         .header-titles h1 { color: var(--ifrs-verde-escuro); margin: 0; font-size: 2.2em; }
         .header-titles p.subtitle { color: #666; margin: 5px 0 0 0; font-weight: bold; font-size: 1.25em; }
 
-        /* Controles */
         .header-controls, .add-form { background: var(--ifrs-cinza); padding: 20px; border-radius: 8px; margin-bottom: 20px; }
         .header-controls { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
         .add-form { border-left: 5px solid var(--ifrs-verde); display: none; flex-direction: column; gap: 15px; }
         
-        /* Tabela Responsiva */
         .table-container { width: 100%; overflow-x: auto; margin-top: 10px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.05); }
         table { width: 100%; border-collapse: collapse; min-width: 750px; }
         th { background-color: var(--ifrs-verde); color: white; padding: 15px; text-align: left; text-transform: uppercase; font-size: 0.85em; position: sticky; top: 0; z-index: 5; }
@@ -43,7 +37,6 @@
         
         .lab-badge { background: #d4edda; color: #155724; padding: 4px 10px; border-radius: 4px; font-size: 0.8em; font-weight: bold; margin-right: 5px; border: 1px solid #c3e6cb; display: inline-block; margin-bottom: 4px; }
         
-        /* MODAL DE SOLICITAÇÃO */
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); justify-content: center; align-items: center; z-index: 2000; padding: 15px; }
         .modal-content { background: white; padding: 25px; border-radius: 12px; width: 100%; max-width: 500px; position: relative; max-height: 90vh; overflow-y: auto; }
         .modal-content h2 { color: var(--ifrs-verde-escuro); margin: 0 0 15px 0; font-size: 1.5em; border-bottom: 2px solid var(--ifrs-cinza); padding-bottom: 10px; }
@@ -54,14 +47,12 @@
         
         .license-options { display: flex; flex-direction: column; gap: 8px; background: #f9f9f9; padding: 10px; border-radius: 6px; }
         .license-item { display: flex; align-items: center; gap: 8px; position: relative; cursor: help; font-size: 0.9em; }
-        
         .info-icon { background: #666; color: white; width: 18px; height: 18px; border-radius: 50%; font-size: 11px; display: inline-flex; align-items: center; justify-content: center; }
-        
         .license-item:hover .tooltip-text { visibility: visible; opacity: 1; }
         .tooltip-text { visibility: hidden; width: 260px; background-color: #333; color: #fff; text-align: left; border-radius: 6px; padding: 12px; position: absolute; z-index: 100; bottom: 125%; left: 0; opacity: 0; transition: opacity 0.3s; font-size: 12px; pointer-events: none; }
 
         .btn-close-modal { position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 24px; cursor: pointer; color: #999; }
-        .btn-salvar { background-color: var(--ifrs-verde); color: white; border: none; padding: 12px; border-radius: 6px; cursor: pointer; font-weight: bold; transition: 0.2s; }
+        .btn-salvar { background-color: var(--ifrs-verde); color: white; border: none; padding: 12px; border-radius: 6px; cursor: pointer; font-weight: bold; transition: 0.2s; width: 100%; }
         .btn-salvar:hover { background-color: var(--ifrs-verde-escuro); }
         
         @media (max-width: 768px) {
@@ -71,7 +62,6 @@
             .header-titles h1 { font-size: 1.5em; }
             .header-titles p.subtitle { font-size: 1em; }
         }
-
         .loading { text-align: center; padding: 40px; color: #777; font-weight: bold; }
     </style>
 </head>
@@ -123,7 +113,7 @@
                 <input type="email" id="reqEmail" required placeholder="exemplo@canoas.ifrs.edu.br">
             </div>
 
-            <button type="submit" class="btn-salvar" style="width: 100%;">Enviar para Análise</button>
+            <button type="submit" class="btn-salvar">Enviar para Análise</button>
         </form>
     </div>
 </div>
@@ -189,8 +179,8 @@
 </div>
 
 <script>
-    // URL ATUALIZADA DO SEU SCRIPT
-    const GOOGLE_APP_URL = "https://script.google.com/macros/s/AKfycbwVCkmrdj9eBnlS87OJW5g3tOleKLfcilD76Lw4rKioHzhpOL9Gr8gGMWfjhwbCXVs5XA/exec"; 
+    // === URL ATUALIZADA EXATAMENTE COMO VOCÊ MANDOU ===
+    const GOOGLE_APP_URL = "https://script.google.com/macros/s/AKfycbzeFJrAYn4tnnU0E6F6aSnixorgiPStTc06qunS8Lx32V1zR931nfDjbB2YDUWZ1AAWrA/exec"; 
     
     const LABS_PERMITIDOS = ["E10", "E09", "E08", "E07", "E06", "E05", "E04", "D04", "D05", "D06", "D10", "B2", "B2A"];
     
@@ -230,7 +220,7 @@
                 mode: 'no-cors',
                 body: JSON.stringify(dados)
             });
-            alert("✅ Solicitação enviada! Ela aparecerá na aba 'Solicitacoes' da sua planilha.");
+            alert("✅ Solicitação enviada! Os dados foram registrados na planilha.");
             closeRequestModal();
             document.getElementById('softwareRequestForm').reset();
         } catch (e) {
@@ -291,8 +281,8 @@
             
             row.innerHTML = `
                 <td class="admin-col" style="display:${isAdminMode ? 'table-cell' : 'none'}">
-                    <button style="cursor:pointer" onclick="prepararEdicao(${sw.id})">✏️</button>
-                    <button style="cursor:pointer" onclick="apagarSoftware(${sw.id})">🗑️</button>
+                    <button style="cursor:pointer; background:#ffc107; border:none; padding:5px 10px; border-radius:4px;" onclick="prepararEdicao(${sw.id})">✏️</button>
+                    <button style="cursor:pointer; background:#dc3545; color:white; border:none; padding:5px 10px; border-radius:4px;" onclick="apagarSoftware(${sw.id})">🗑️</button>
                 </td>
                 <td><strong>${sw.id}</strong></td>
                 <td>${sw.name}</td>

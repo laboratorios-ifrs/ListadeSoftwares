@@ -9,9 +9,16 @@
         body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #e9ecef; margin: 0; padding: 20px; color: var(--ifrs-texto); user-select: none; }
         .container { max-width: 1200px; margin: auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); border-top: 8px solid var(--ifrs-verde); position: relative; }
         
-        .btn-admin-toggle { position: absolute; top: 30px; right: 30px; background: none; border: 1px solid #ccc; color: #666; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 0.85em; transition: 0.2s; font-weight: bold; }
-        .btn-admin-toggle:hover { background: #eee; }
+        /* GRUPO DE BOTÕES NO TOPO DIREITO */
+        .top-buttons { position: absolute; top: 30px; right: 30px; display: flex; gap: 10px; z-index: 10; }
         
+        .btn-admin-toggle { background: #fff; border: 1px solid #ccc; color: #555; padding: 0 15px; border-radius: 4px; cursor: pointer; font-size: 0.9em; font-weight: bold; transition: 0.2s; display: flex; align-items: center; justify-content: center; height: 38px; box-sizing: border-box; }
+        .btn-admin-toggle:hover { background: #f8f9fa; border-color: #bbb; }
+        
+        .btn-solicitar { background-color: #ffc107; color: #212529; border: 1px solid #ffc107; padding: 0 15px; border-radius: 4px; font-weight: bold; font-size: 0.9em; cursor: pointer; transition: 0.2s; text-decoration: none; display: flex; align-items: center; justify-content: center; height: 38px; box-sizing: border-box; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .btn-solicitar:hover { background-color: #e0a800; border-color: #e0a800; }
+        .icon-plus { margin-right: 6px; }
+
         .header-main { display: flex; align-items: center; gap: 10px; margin-bottom: 30px; border-bottom: 2px solid var(--ifrs-cinza); padding-bottom: 20px; }
         
         .logo-ifrs { width: 125px; height: auto; } 
@@ -21,7 +28,7 @@
         .header-titles p.subtitle { color: #666; margin: 5px 0 0 0; font-weight: bold; font-size: 1.25em; }
 
         .header-controls, .add-form { background: var(--ifrs-cinza); padding: 20px; border-radius: 8px; margin-bottom: 20px; }
-        .header-controls { display: flex; justify-content: space-between; align-items: center; }
+        .header-controls { display: flex; justify-content: space-between; align-items: flex-end; gap: 15px; flex-wrap: wrap; }
         .add-form { border-left: 5px solid var(--ifrs-verde); display: none; gap: 15px; align-items: flex-end; flex-wrap: wrap; transition: 0.3s; }
         .add-form h3 { width: 100%; margin: 0 0 5px 0; color: var(--ifrs-verde-escuro); font-size: 1.1em; }
         .input-group { display: flex; flex-direction: column; flex: 1; min-width: 150px; }
@@ -40,8 +47,8 @@
         button:disabled { background-color: #999 !important; cursor: not-allowed !important; }
         .btn-cancelar { background-color: #6c757d; color: white; border: none; padding: 12px 15px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 15px; transition: 0.2s; height: 43px; margin-top: 10px; display: none; }
         .btn-cancelar:hover { background-color: #5a6268; }
-        
-        .counter { font-weight: bold; color: var(--ifrs-verde-escuro); background: #d4edda; padding: 8px 15px; border-radius: 20px; white-space: nowrap; }
+
+        .counter { font-weight: bold; color: var(--ifrs-verde-escuro); background: #d4edda; padding: 8px 15px; border-radius: 20px; white-space: nowrap; height: 43px; display: flex; align-items: center; box-sizing: border-box; }
         
         table { width: 100%; border-collapse: collapse; margin-top: 10px; }
         th { background-color: var(--ifrs-verde); color: white; padding: 15px; text-align: left; text-transform: uppercase; font-size: 0.9em; position: sticky; top: 0; }
@@ -75,10 +82,15 @@
         @media (max-width: 768px) {
             .header-main { flex-direction: column; text-align: center; gap: 15px; }
             .header-titles h1, .header-titles p.subtitle { text-align: center; }
-            .btn-admin-toggle { position: static; display: block; margin: 0 auto 20px auto; width: 100%; }
+            
+            .top-buttons { position: static; display: flex; flex-direction: column; width: 100%; margin-bottom: 20px; gap: 10px; }
+            .btn-solicitar, .btn-admin-toggle { width: 100%; justify-content: center; }
+            
             .admin-col { width: auto; }
             .btn-delete { margin-top: 5px; }
             .logo-ifrs { width: 100px; } 
+            .header-controls { flex-direction: column; align-items: stretch; }
+            .counter { justify-content: center; }
         }
     </style>
 </head>
@@ -100,7 +112,16 @@
 </div>
 
 <div class="container">
-    <button id="btnToggleAdmin" class="btn-admin-toggle" onclick="toggleAdmin()">🔒 Acesso Restrito</button>
+    
+    <div class="top-buttons">
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSeXvYszifU2Zcc3-sz8j-doe_jcDxi4cvC0A4ZNkvWoxyeIag/viewform?usp=header" target="_blank" class="btn-solicitar">
+            <svg class="icon-plus" width="16" height="16" viewBox="0 0 24 24" fill="transparent" stroke="#212529" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 5V19M5 12H19" />
+            </svg>
+            Solicitar Software
+        </a>
+        <button id="btnToggleAdmin" class="btn-admin-toggle" onclick="toggleAdmin()">🔒 Acesso Restrito</button>
+    </div>
     
     <div class="header-main">
         <img src="ifrs.png" alt="Instituto Federal do Rio Grande do Sul - Campus Canoas" class="logo-ifrs">
@@ -137,6 +158,7 @@
             <label for="searchInput">🔍 Buscar na Lista:</label>
             <input type="text" id="searchInput" placeholder="Digite o laboratório (ex: E06) ou software..." onkeyup="filterTable()">
         </div>
+        
         <div class="counter" id="resultCount">Calculando...</div>
     </div>
 
@@ -159,7 +181,6 @@
 <script>
     const GOOGLE_APP_URL = "https://script.google.com/macros/s/AKfycbyQKP6NEhGgiOeaQjPi09iZrWl0i_FWIIsy7HnxLiCk2MYVADM-3MrRMWYUYVPPcqZLFw/exec"; 
 
-    // --- AQUI ESTÁ O E04 ADICIONADO NA LISTA ---
     const LABS_PERMITIDOS = ["E10", "E09", "E08", "E07", "E06", "E05", "E04", "D05", "D06", "D10", "B2", "B2A"];
     
     let softwareData = [];
@@ -426,4 +447,3 @@
 
 </body>
 </html>
-

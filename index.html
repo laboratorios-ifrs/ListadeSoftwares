@@ -33,9 +33,13 @@
         .table-container { width: 100%; overflow-x: auto; margin-top: 10px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.05); }
         table { width: 100%; border-collapse: collapse; min-width: 750px; }
         th { background-color: var(--ifrs-verde); color: white; padding: 15px; text-align: left; text-transform: uppercase; font-size: 0.85em; position: sticky; top: 0; z-index: 5; }
-        td { padding: 12px 15px; border-bottom: 1px solid #eee; background: white; }
+        td { padding: 12px 15px; border-bottom: 1px solid #eee; background: white; vertical-align: middle; }
         tr:nth-child(even) td { background-color: #f9f9f9; }
         
+        /* CONTROLE MÁGICO DO MODO ADMIN - Evita desalinhamento da tabela */
+        .admin-col { display: none; width: 110px; text-align: center; }
+        body.admin-active .admin-col { display: table-cell; }
+
         .lab-badge { background: #d4edda; color: #155724; padding: 4px 10px; border-radius: 4px; font-size: 0.8em; font-weight: bold; margin-right: 5px; border: 1px solid #c3e6cb; display: inline-block; margin-bottom: 4px; }
         
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); justify-content: center; align-items: center; z-index: 2000; padding: 15px; }
@@ -49,7 +53,6 @@
         
         .license-options-container { background: #f9f9f9; padding: 15px; border-radius: 8px; border: 1px solid #eee; display: flex; flex-direction: column; gap: 10px; }
         .license-item { display: flex; align-items: center; gap: 10px; position: relative; cursor: pointer; padding: 5px 0; }
-        
         .license-item input[type="radio"] { appearance: none; -webkit-appearance: none; width: 18px; height: 18px; border: 2px solid #aaa; border-radius: 50%; background-color: #fff; cursor: pointer; display: grid; place-content: center; transition: 0.15s; margin: 0; flex-shrink: 0; }
         .license-item input[type="radio"]::before { content: ""; width: 10px; height: 10px; border-radius: 50%; transform: scale(0); transition: 0.15s; box-shadow: inset 10px 10px var(--ifrs-verde); }
         .license-item input[type="radio"]:checked { border-color: var(--ifrs-verde); }
@@ -63,7 +66,7 @@
         .tooltip-text::after { content: ""; position: absolute; top: 100%; left: 20px; margin-left: -5px; border-width: 5px; border-style: solid; border-color: #333 transparent transparent transparent; }
 
         .btn-close-modal { position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 24px; cursor: pointer; color: #999; }
-        .btn-salvar { background-color: var(--ifrs-verde); color: white; border: none; padding: 14px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.2s; width: 100%; font-size: 16px; margin-top: 10px; }
+        .btn-salvar { background-color: var(--ifrs-verde); color: white; border: none; padding: 14px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.2s; width: 100%; font-size: 16px; }
         .btn-salvar:hover { background-color: var(--ifrs-verde-escuro); transform: translateY(-1px); }
         
         @media (max-width: 768px) {
@@ -120,7 +123,7 @@
                 <input type="email" id="reqEmail" required placeholder="exemplo@canoas.ifrs.edu.br">
             </div>
 
-            <button type="submit" class="btn-salvar">Enviar para Análise da TI</button>
+            <button type="submit" class="btn-salvar" style="margin-top: 15px;">Enviar para Análise da TI</button>
         </form>
     </div>
 </div>
@@ -155,18 +158,19 @@
 
     <div id="adminPanel" class="add-form">
         <h3 id="formTitle" style="margin-top:0;">➕ Gerenciar Inventário</h3>
-        <div style="display:flex; gap:10px; flex-wrap:wrap;">
-            <div class="form-group" style="width:100px; margin:0;">
-                <input type="number" id="newId" placeholder="ID">
+        <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom: 5px;">
+            <div class="form-group" style="width:120px; margin:0;">
+                <input type="number" id="newId" placeholder="ID (ex: 1)">
             </div>
             <div class="form-group" style="flex:1; margin:0;">
                 <input type="text" id="newName" placeholder="Nome do Software">
             </div>
         </div>
         <div id="labSelectors" style="margin:10px 0; display:flex; flex-wrap:wrap; gap:8px;"></div>
-        <div style="display:flex; gap:10px;">
-            <button id="btnSave" class="btn-salvar" style="flex:1; margin:0;" onclick="saveSoftware('add')">Salvar no Banco</button>
-            <button id="btnCancel" class="btn-admin-toggle" style="display:none; margin:0;" onclick="resetForm()">Cancelar Edição</button>
+        
+        <div style="display:flex; gap:10px; margin-top: 10px;">
+            <button id="btnSave" class="btn-salvar" style="flex:1; margin:0;" onclick="saveSoftware('add')">➕ Adicionar Software</button>
+            <button id="btnCancel" class="btn-admin-toggle" style="display:none; margin:0;" onclick="resetForm()">❌ Cancelar Edição</button>
         </div>
     </div>
 
@@ -181,7 +185,7 @@
         <table id="softwareTable" style="display:none;">
             <thead>
                 <tr>
-                    <th class="admin-col" style="display:none">Ações</th>
+                    <th class="admin-col">Ações</th>
                     <th style="width: 70px;">ID</th>
                     <th>Software e Observações</th>
                     <th>Laboratórios</th>
@@ -247,10 +251,11 @@
     // --- FUNÇÕES DE ADMINISTRAÇÃO E TABELA ---
     function toggleAdmin() {
         if (isAdminMode) {
-            isAdminMode = false; senhaConfirmada = "";
+            isAdminMode = false; 
+            senhaConfirmada = "";
             document.getElementById('adminPanel').style.display = 'none';
             document.getElementById('btnToggleAdmin').innerHTML = '🔒 Acesso Restrito';
-            renderTable();
+            document.body.classList.remove('admin-active'); // Esconde a coluna Ações perfeitamente
         } else {
             document.getElementById('adminPasswordInput').value = "";
             document.getElementById('passwordModal').style.display = 'flex';
@@ -282,11 +287,12 @@
             if (dados.erro) {
                 alert("Erro da Planilha: " + dados.erro);
             } else if (dados.sucesso) {
-                isAdminMode = true; senhaConfirmada = senha;
-                document.getElementById('adminPanel').style.display = 'flex';
+                isAdminMode = true; 
+                senhaConfirmada = senha;
+                document.getElementById('adminPanel').style.display = 'block';
                 document.getElementById('btnToggleAdmin').innerHTML = '🔓 Sair do Admin';
+                document.body.classList.add('admin-active'); // Mostra a coluna Ações perfeitamente
                 closePasswordModal();
-                renderTable();
             } else { 
                 alert("❌ Senha incorreta! Verifique a aba Config."); 
             }
@@ -306,7 +312,7 @@
             try {
                 softwareData = JSON.parse(textoGoogle);
             } catch (err) {
-                ind.innerHTML = `<div class="error-box"><b>❌ ALERTA:</b> O Google bloqueou o acesso. Verifique as permissões de Implantação.</div>`;
+                ind.innerHTML = `<div class="error-box"><b>❌ ALERTA:</b> O Google Apps Script está rodando uma versão com erro!<br>Você esqueceu de fazer a "Nova Implantação" após salvar o código do Google.</div>`;
                 return;
             }
             
@@ -344,9 +350,11 @@
                 }).join('');
                 
                 row.innerHTML = `
-                    <td class="admin-col" style="display:${isAdminMode ? 'table-cell' : 'none'}">
-                        <button style="cursor:pointer; background:#ffc107; border:none; padding:5px 10px; border-radius:4px;" onclick="prepararEdicao('${sw.id}')">✏️</button>
-                        <button style="cursor:pointer; background:#dc3545; color:white; border:none; padding:5px 10px; border-radius:4px;" onclick="apagarSoftware('${sw.id}')">🗑️</button>
+                    <td class="admin-col">
+                        <div style="display:flex; gap:5px; justify-content:center;">
+                            <button style="cursor:pointer; background:#ffc107; border:none; padding:6px 10px; border-radius:4px; font-size:14px;" onclick="prepararEdicao('${sw.id}')" title="Editar">✏️</button>
+                            <button style="cursor:pointer; background:#dc3545; color:white; border:none; padding:6px 10px; border-radius:4px; font-size:14px;" onclick="apagarSoftware('${sw.id}')" title="Apagar">🗑️</button>
+                        </div>
                     </td>
                     <td><strong>${sw.id || '-'}</strong></td>
                     <td>${sw.name || 'Sem Nome'}</td>
@@ -427,7 +435,12 @@
         document.getElementById('newId').value = sw.id;
         document.getElementById('newId').readOnly = true;
         document.getElementById('newName').value = sw.name;
-        document.getElementById('btnSave').onclick = () => saveSoftware('update');
+        
+        // Muda o texto do botão para "Atualizar"
+        const btnSave = document.getElementById('btnSave');
+        btnSave.innerText = "💾 Atualizar Software";
+        btnSave.onclick = () => saveSoftware('update');
+        
         document.getElementById('btnCancel').style.display = 'block';
         window.scrollTo(0,0);
     }

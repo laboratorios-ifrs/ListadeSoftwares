@@ -27,8 +27,7 @@
         .header-titles p.subtitle { color: #666; margin: 5px 0 0 0; font-weight: bold; font-size: 1.25em; }
 
         .header-controls, .add-form { background: var(--ifrs-cinza); padding: 20px; border-radius: 8px; margin-bottom: 20px; }
-        .header-controls { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
-        .add-form { border-left: 5px solid var(--ifrs-verde); display: none; flex-direction: column; gap: 15px; }
+        .add-form { border-left: 5px solid var(--ifrs-verde); display: none; flex-direction: column; }
         
         .table-container { width: 100%; overflow-x: auto; margin-top: 10px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.05); }
         table { width: 100%; border-collapse: collapse; min-width: 750px; }
@@ -36,12 +35,13 @@
         td { padding: 12px 15px; border-bottom: 1px solid #eee; background: white; vertical-align: middle; }
         tr:nth-child(even) td { background-color: #f9f9f9; }
         
-        /* CONTROLE MÁGICO DO MODO ADMIN - Evita desalinhamento da tabela */
+        /* Controle da Coluna de Admin */
         .admin-col { display: none; width: 110px; text-align: center; }
         body.admin-active .admin-col { display: table-cell; }
 
-        .lab-badge { background: #d4edda; color: #155724; padding: 4px 10px; border-radius: 4px; font-size: 0.8em; font-weight: bold; margin-right: 5px; border: 1px solid #c3e6cb; display: inline-block; margin-bottom: 4px; }
+        .lab-badge { background: #d4edda; color: #155724; padding: 6px 12px; border-radius: 4px; font-size: 0.85em; font-weight: bold; margin-right: 5px; border: 1px solid #c3e6cb; display: inline-block; margin-bottom: 4px; }
         
+        /* Modais */
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); justify-content: center; align-items: center; z-index: 2000; padding: 15px; }
         .modal-content { background: white; padding: 25px; border-radius: 12px; width: 100%; max-width: 550px; position: relative; max-height: 90vh; overflow-y: auto; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
         .modal-content h2 { color: var(--ifrs-verde-escuro); margin: 0 0 15px 0; font-size: 1.5em; border-bottom: 2px solid var(--ifrs-cinza); padding-bottom: 10px; }
@@ -66,7 +66,7 @@
         .tooltip-text::after { content: ""; position: absolute; top: 100%; left: 20px; margin-left: -5px; border-width: 5px; border-style: solid; border-color: #333 transparent transparent transparent; }
 
         .btn-close-modal { position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 24px; cursor: pointer; color: #999; }
-        .btn-salvar { background-color: var(--ifrs-verde); color: white; border: none; padding: 14px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.2s; width: 100%; font-size: 16px; }
+        .btn-salvar { background-color: var(--ifrs-verde); color: white; border: none; padding: 14px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.2s; font-size: 16px; }
         .btn-salvar:hover { background-color: var(--ifrs-verde-escuro); transform: translateY(-1px); }
         
         @media (max-width: 768px) {
@@ -123,7 +123,7 @@
                 <input type="email" id="reqEmail" required placeholder="exemplo@canoas.ifrs.edu.br">
             </div>
 
-            <button type="submit" class="btn-salvar" style="margin-top: 15px;">Enviar para Análise da TI</button>
+            <button type="submit" class="btn-salvar" style="width: 100%; margin-top: 15px;">Enviar para Análise da TI</button>
         </form>
     </div>
 </div>
@@ -157,26 +157,37 @@
     </div>
 
     <div id="adminPanel" class="add-form">
-        <h3 id="formTitle" style="margin-top:0;">➕ Gerenciar Inventário</h3>
-        <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom: 5px;">
-            <div class="form-group" style="width:120px; margin:0;">
-                <input type="number" id="newId" placeholder="ID (ex: 1)">
+        <h3 id="formTitle" style="margin-top:0; color: var(--ifrs-verde-escuro); margin-bottom: 20px;">➕ Painel Administrativo - Adicionar Software</h3>
+        
+        <div style="display:flex; gap:20px; flex-wrap:wrap; margin-bottom: 15px;">
+            <div class="form-group" style="width:150px; margin:0;">
+                <label style="font-size:0.85em; font-weight:bold; display:block; margin-bottom:5px; color:#555;">ID</label>
+                <input type="number" id="newId" placeholder="Ex: 57">
             </div>
-            <div class="form-group" style="flex:1; margin:0;">
-                <input type="text" id="newName" placeholder="Nome do Software">
+            <div class="form-group" style="flex:1; margin:0; min-width: 250px;">
+                <label style="font-size:0.85em; font-weight:bold; display:block; margin-bottom:5px; color:#555;">Nome do Software</label>
+                <input type="text" id="newName" placeholder="Ex: Android Studio">
             </div>
         </div>
-        <div id="labSelectors" style="margin:10px 0; display:flex; flex-wrap:wrap; gap:8px;"></div>
+
+        <p style="font-size: 0.9em; font-weight: bold; margin: 0 0 10px 0; color: #444;">Selecione os Laboratórios (Clique para marcar/desmarcar):</p>
         
-        <div style="display:flex; gap:10px; margin-top: 10px;">
-            <button id="btnSave" class="btn-salvar" style="flex:1; margin:0;" onclick="saveSoftware('add')">➕ Adicionar Software</button>
-            <button id="btnCancel" class="btn-admin-toggle" style="display:none; margin:0;" onclick="resetForm()">❌ Cancelar Edição</button>
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap: 15px;">
+            <div id="labSelectors" style="display:flex; flex-wrap:wrap; gap:8px; flex:1;"></div>
+            
+            <div style="display:flex; gap:10px;">
+                <button id="btnSave" class="btn-salvar" style="margin:0; padding: 12px 25px; width:auto;" onclick="saveSoftware('add')">Salvar na Nuvem</button>
+                <button id="btnCancel" class="btn-admin-toggle" style="display:none; margin:0;" onclick="resetForm()">Cancelar</button>
+            </div>
         </div>
     </div>
 
-    <div class="header-controls">
-        <input type="text" id="searchInput" style="flex:1; padding:12px; border-radius:6px; border:1px solid var(--cor-borda); font-size:16px;" placeholder="🔍 Buscar software ou laboratório (ex: E06)..." onkeyup="filterTable()">
-        <div class="counter" id="resultCount" style="margin-left:15px; font-weight:bold; color:var(--ifrs-verde-escuro);">Carregando...</div>
+    <div class="header-controls" style="display:flex; flex-direction:column; align-items:flex-start; gap:10px;">
+        <label style="font-weight:bold; font-size:0.95em; color:#444;">🔍 Buscar na Lista:</label>
+        <div style="display:flex; width:100%; gap:15px; align-items:center; flex-wrap:wrap;">
+            <input type="text" id="searchInput" style="flex:1; min-width: 250px; padding:12px; border-radius:6px; border:1px solid var(--cor-borda); font-size:16px;" placeholder="Digite o laboratório (ex: E06) ou software..." onkeyup="filterTable()">
+            <div class="counter" id="resultCount" style="background:#d4edda; color:#155724; padding:12px 20px; border-radius:6px; font-weight:bold; white-space:nowrap; font-size: 0.95em;">Mostrando: Carregando...</div>
+        </div>
     </div>
 
     <div id="loadingIndicator" class="loading">⏳ Sincronizando com a Planilha Google...</div>
@@ -197,7 +208,7 @@
 </div>
 
 <script>
-    // URL DE PRODUÇÃO MANTIDA
+    // URL DEFINITIVA E FUNCIONAL
     const GOOGLE_APP_URL = "https://script.google.com/macros/s/AKfycbweYJf_YqJHVUgqvmsjJCKSS7YjX5GnwE44lHHJ70_ztnPrB90IRD2a-zxoYHE1fPfFuQ/exec"; 
     
     const LABS_PERMITIDOS = ["E10", "E09", "E08", "E07", "E06", "E05", "E04", "D04", "D05", "D06", "D10", "B2", "B2A"];
@@ -255,7 +266,7 @@
             senhaConfirmada = "";
             document.getElementById('adminPanel').style.display = 'none';
             document.getElementById('btnToggleAdmin').innerHTML = '🔒 Acesso Restrito';
-            document.body.classList.remove('admin-active'); // Esconde a coluna Ações perfeitamente
+            document.body.classList.remove('admin-active'); 
         } else {
             document.getElementById('adminPasswordInput').value = "";
             document.getElementById('passwordModal').style.display = 'flex';
@@ -291,7 +302,7 @@
                 senhaConfirmada = senha;
                 document.getElementById('adminPanel').style.display = 'block';
                 document.getElementById('btnToggleAdmin').innerHTML = '🔓 Sair do Admin';
-                document.body.classList.add('admin-active'); // Mostra a coluna Ações perfeitamente
+                document.body.classList.add('admin-active'); 
                 closePasswordModal();
             } else { 
                 alert("❌ Senha incorreta! Verifique a aba Config."); 
@@ -312,7 +323,7 @@
             try {
                 softwareData = JSON.parse(textoGoogle);
             } catch (err) {
-                ind.innerHTML = `<div class="error-box"><b>❌ ALERTA:</b> O Google Apps Script está rodando uma versão com erro!<br>Você esqueceu de fazer a "Nova Implantação" após salvar o código do Google.</div>`;
+                ind.innerHTML = `<div class="error-box"><b>❌ ALERTA:</b> O Google bloqueou a leitura da planilha.</div>`;
                 return;
             }
             
@@ -376,9 +387,10 @@
             r.style.display = show ? '' : 'none';
             if(show && r.cells.length > 1) cont++; 
         });
-        document.getElementById('resultCount').innerText = `${cont} Software(s)`;
+        document.getElementById('resultCount').innerText = `Mostrando: ${cont} software(s)`;
     }
 
+    // Cria as tags de laboratórios no formato cinza desmarcado e verde marcado
     function criarBotoesLaboratorio() {
         const container = document.getElementById('labSelectors');
         container.innerHTML = ''; 
@@ -386,14 +398,22 @@
             const btn = document.createElement('div');
             btn.className = 'lab-badge';
             btn.style.cursor = 'pointer';
+            btn.style.background = '#e9ecef';
+            btn.style.color = '#555';
+            btn.style.borderColor = '#ccc';
             btn.innerText = lab;
+            
             btn.onclick = () => {
                 if(labsSelecionados.includes(lab)) {
                     labsSelecionados = labsSelecionados.filter(l => l !== lab);
-                    btn.style.background = '#d4edda'; btn.style.color = '#155724';
+                    btn.style.background = '#e9ecef';
+                    btn.style.color = '#555';
+                    btn.style.borderColor = '#ccc';
                 } else {
                     labsSelecionados.push(lab);
-                    btn.style.background = '#32a041'; btn.style.color = '#fff';
+                    btn.style.background = '#32a041';
+                    btn.style.color = '#fff';
+                    btn.style.borderColor = '#32a041';
                 }
             };
             container.appendChild(btn);
@@ -436,13 +456,14 @@
         document.getElementById('newId').readOnly = true;
         document.getElementById('newName').value = sw.name;
         
-        // Muda o texto do botão para "Atualizar"
+        document.getElementById('formTitle').innerText = "✏️ Painel Administrativo - Editar Software";
+        
         const btnSave = document.getElementById('btnSave');
-        btnSave.innerText = "💾 Atualizar Software";
+        btnSave.innerText = "Salvar Alterações";
         btnSave.onclick = () => saveSoftware('update');
         
         document.getElementById('btnCancel').style.display = 'block';
-        window.scrollTo(0,0);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     function resetForm() { location.reload(); }
